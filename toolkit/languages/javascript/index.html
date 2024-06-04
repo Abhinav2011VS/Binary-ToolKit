@@ -9,11 +9,19 @@
 <body>
     <div class="container">
         <h1>JS Converter</h1>
-        <img src="/data/gif/coming-soon/soon.gif" alt="Coming Soon..." style="height: 35%; width: 35%;">
+        <img src="/data/gif/coming-soon/soon.gif" alt="Coming Soon..." style="height: 30%; width: 30%;">
         <h1 id="animation">Coming Soon</h1>
-        <img src="/data/gif/coming-soon/coming-soon.gif" alt="Coming Soon..." style="height: 35%; width: 35%;">
+        <img src="/data/gif/coming-soon/coming-soon.gif" alt="Coming Soon..." style="height: 30%; width: 30%;">
+        <button onclick="goToHomePage()">Home</button>
+        <button onclick="goToTypesPage()">Get More Types</button>
     </div>
     <script>
+        function goToHomePage() {
+            window.location.href = '/';
+        }
+        function goToTypesPage() {
+            window.location.href = '/types';
+        }
         const h1 = document.getElementById('animation');
         let dots = 0;
         setInterval(() => {
