@@ -198,13 +198,34 @@
         }
 
         function downloadSource() {
-            var inputText = document.getElementById("input").value;
-            downloadFile("source.txt", inputText);
+            var inputText = document.getElementById("input").value.trim();
+            var outputText = document.getElementById("output").value.trim();
+
+            if (inputText && !isBinary(inputText)) {
+                downloadFile("source.txt", inputText);
+            } else if (outputText && !isBinary(outputText)) {
+                downloadFile("source.txt", outputText);
+            } else {
+                alert("No source code available to download.");
+            }
         }
 
         function downloadBinary() {
-            var binaryText = document.getElementById("output").value;
-            downloadFile("binary.txt", binaryText);
+            var inputText = document.getElementById("input").value.trim();
+            var outputText = document.getElementById("output").value.trim();
+
+            if (inputText && isBinary(inputText)) {
+                downloadFile("binary.txt", inputText);
+            } else if (outputText && isBinary(outputText)) {
+                downloadFile("binary.txt", outputText);
+            } else {
+                alert("No binary code available to download.");
+            }
+        }
+
+        function isBinary(text) {
+            // Check if the text consists of only 0s, 1s, and spaces
+            return /^[01\s]+$/.test(text);
         }
 
         function copyOutput() {
