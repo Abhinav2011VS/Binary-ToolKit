@@ -46,6 +46,47 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
+
+        btn-length-big:focus {
+            outline: none;
+            background-color: rgba(255, 40, 145, 0.6);
+        }
+        btn-length-big:hover {
+            outline: none;
+            background-color: rgba(255, 40, 145, 0.8);
+        }
+        btn-length-big {
+            width: calc(50% - 15px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 40, 145, 0.4);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-length-big:focus {
+            outline: none;
+            background-color: rgba(255, 40, 145, 0.6);
+        }
+        .btn-length-big:hover {
+            outline: none;
+            background-color: rgba(255, 40, 145, 0.8);
+        }
+        .btn-length-big {
+            width: calc(100% - 30px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 40, 145, 0.4);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +121,7 @@
         <button onclick="goTo2000000000Page()" class="btn-length" id="btn-length">2,000,000,000 characters</button>
         <button onclick="goTo5000000000Page()" class="btn-length" id="btn-length">5,000,000,000 characters</button>
         <button onclick="goTo10000000000Page()" class="btn-length" id="btn-length">10,000,000,000 characters</button>
+        <button onclick="goToCustomPage()" class="btn-length" id="btn-length">Custom characters</button>
         <button onclick="goToHomePage()">Home</button>
         <button onclick="goToTypesPage()">Get More Types</button>
         <label for="made-by">Made by Abhinav VS</label>
@@ -89,6 +131,9 @@
     <script>
         function goToTypesPage() {
             window.location.href = '/types';
+        }
+        function goToCustomPage() {
+            window.location.href = '/toolkit/lengths/custom';
         }
         function goTo10Page() {
             window.location.href = '/toolkit/lengths/10';
