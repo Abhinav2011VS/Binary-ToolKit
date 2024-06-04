@@ -206,3 +206,8 @@ document.addEventListener("keydown", function (e) {
         showPopup("Inspection or viewing source is disabled.");
     }
 });
+
+function goToLengthsPage() {
+    window.location.href = '/lengths';
+}
+
