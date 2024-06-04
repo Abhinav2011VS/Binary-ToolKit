@@ -148,31 +148,6 @@ label {
     font-size: 18px;
 }
 
-.custom-menu {
-    display: none;
-    position: absolute;
-    z-index: 9999; /* Ensure it appears above everything */
-    background: #333; /* Background color */
-    border-radius: 5px;
-    padding: 5px 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
-    color: #fff;
-}
-
-.custom-menu div {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.custom-menu div:hover {
-    background: #444; /* Change background color on hover */
-}
-
-.container:hover .custom-menu {
-    display: block;
-}
-
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 .wrapper{
   visibility: hidden;
@@ -181,7 +156,7 @@ label {
   width: 300px;
   border-radius: 10px;
   background: #fff;
-    color black
+  color: black;
   box-shadow: 0 12px 35px rgba(0,0,0,0.1);
 }
 .wrapper .menu{
