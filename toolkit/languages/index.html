@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Binary Toolkit - Code - JS</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>JS Converter</h1>
+        <img src="/data/gif/coming-soon/soon.gif" alt="Coming Soon..." style="height: 25%; width: 25%;">
+        <h1 id="animation">Coming Soon</h1>
+        <img src="/data/gif/coming-soon/coming-soon.gif" alt="Coming Soon..." style="height: 25%; width: 25%;">
+        <button onclick="goToHomePage()">Home</button>
+        <button onclick="goToTypesPage()">Get More Types</button>
+    </div>
+    <script>
+        function goToHomePage() {
+            window.location.href = '/';
+        }
+        function goToTypesPage() {
+            window.location.href = '/types';
+        }
+        const h1 = document.getElementById('animation');
+        let dots = 0;
+        setInterval(() => {
+            let text = 'Coming Soon';
+            for (let i = 0; i < dots; i++) {
+                text += '.';
+            }
+            h1.textContent = text;
+            dots = (dots + 1) % 4;
+        }, 500);
+    </script>
+</body>
+</html>
