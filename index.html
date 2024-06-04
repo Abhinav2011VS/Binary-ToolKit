@@ -52,7 +52,7 @@
 
         input[type="text"],
         textarea,
-        select,
+        select,    
         button {
             width: calc(100% - 40px);
             padding: 10px;
@@ -81,12 +81,29 @@
         select {
             appearance: none;
             -webkit-appearance: none;
+            background-color: rgba(255, 255, 255, 0.3); /* Background color */
+            color: #fff; /* Text color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px 10px 10px;
+            font-size: 16px;
+            cursor: pointer;
             background-image: url('data:image/svg+xml;utf8,<svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0z"/></svg>');
             background-size: 18px;
             background-position: calc(100% - 10px) center;
             background-repeat: no-repeat;
+            transition: all 0.3s ease;
         }
 
+        select:hover {
+            background-color: rgba(255, 255, 255, 0.5); /* Background color on hover */
+        }
+
+        select:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.7); /* Background color on focus */
+        }
+        
         button {
             cursor: pointer;
             background-color: #3498db;
