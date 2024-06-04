@@ -6,46 +6,140 @@
     <title>Binary Converter</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            }
+            100% {
+                text-shadow: 0 0 20px #ff00de, 0 0 40px #ff00de, 0 0 60px #ff00de;
+            }
+        }
+
+        input[type="text"],
+        textarea,
+        select,
+        button {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus,
+        button:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0z"/></svg>');
+            background-size: 18px;
+            background-position: calc(100% - 10px) center;
+            background-repeat: no-repeat;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #3498db;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:active {
+            background-color: #1f618d;
+        }
+
         textarea {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
+            height: 150px;
+        }
+
+        label {
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <h1>Binary Converter</h1>
-    <label for="input">Input:</label>
-    <textarea id="input" placeholder="Enter text or binary" maxlength="1000"></textarea>
-    <span id="charCount">0/1000</span>
-    <br>
-    <label for="charSet">Character Set:</label>
-    <select id="charSet">
-        <option value="ascii">ASCII</option>
-        <option value="unicode">Unicode</option>
-    </select>
-    <br>
-    <label for="binaryOption">Binary Representation:</label>
-    <select id="binaryOption">
-        <option value="standard">Standard (No leading zeros)</option>
-        <option value="leadingZeros">Leading Zeros</option>
-        <option value="asciiCodes">ASCII Codes</option>
-        <option value="unicodeCodes">Unicode Codes</option>
-    </select>
-    <br>
-    <button onclick="convertToBinary()">To Binary</button>
-    <button onclick="convertFromBinary()">From Binary</button>
-    <button onclick="clearFields()">Clear</button>
-    <button onclick="copyOutput()">Copy Output</button>
-    <br>
-    <label for="output">Output:</label>
-    <textarea id="output" readonly></textarea>
-    <br>
-    <button onclick="downloadSource()">Download Source Code</button>
-    <button onclick="downloadBinary()">Download Binary Code</button>
+    <div class="container">
+        <h1>Binary Converter</h1>
+        <label for="input">Input:</label>
+        <textarea id="input" placeholder="Enter text or binary" maxlength="1000"></textarea>
+        <span id="charCount">0/1000</span>
+        <br>
+        <label for="charSet">Character Set:</label>
+        <select id="charSet">
+            <option value="ascii">ASCII</option>
+            <option value="unicode">Unicode</option>
+        </select>
+        <br>
+        <label for="binaryOption">Binary Representation:</label>
+        <select id="binaryOption">
+            <option value="standard">Standard (No leading zeros)</option>
+            <option value="leadingZeros">Leading Zeros</option>
+            <option value="asciiCodes">ASCII Codes</option>
+            <option value="unicodeCodes">Unicode Codes</option>
+        </select>
+        <br>
+        <button onclick="convertToBinary()">To Binary</button>
+        <button onclick="convertFromBinary()">From Binary</button>
+        <button onclick="clearFields()">Clear</button>
+        <button onclick="copyOutput()">Copy Output</button>
+        <br>
+        <label for="output">Output:</label>
+        <textarea id="output" readonly></textarea>
+        <br>
+        <button onclick="downloadSource()">Download Source Code</button>
+        <button onclick="downloadBinary()">Download Binary Code</button>
+    </div>
 
     <script>
         function convertToBinary() {
