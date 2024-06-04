@@ -1,66 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript to Binary</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: none;
-        }
-
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>JavaScript to Binary / Binary to JavaScript Converter</h1>
-        <textarea id="input" placeholder="Enter JavaScript or Binary"></textarea>
-        <button onclick="convertToBinary()">Convert to Binary</button>
-        <button onclick="convertToJavaScript()">Convert to JavaScript</button>
-        <textarea id="output" placeholder="Converted Output" readonly></textarea>
-    </div>
-
-    <script>
-        function isJavaScript(input) {
+function isJavaScript(input) {
     try {
         // Try to parse the input as JavaScript
         new Function(input);
@@ -71,30 +9,35 @@
     }
 }
 
-function convertToBinary(input) {
+function convertToBinary() {
+    const input = document.getElementById('input').value;
     if (isJavaScript(input)) {
         // Convert JavaScript to Binary
-        const binary = input.split('').map(char => char.charCodeAt(0).toString(2)).join(' ');
-        return binary;
+        document.getElementById('output').value = 'Converting...';
+        setTimeout(() => {
+            const binary = input.split('').map(char => char.charCodeAt(0).toString(2)).join(' ');
+            document.getElementById('output').value = binary;
+        }, 1000);
     } else {
-        return 'Please enter valid JavaScript code.';
+        alert('Please enter valid JavaScript code.');
     }
 }
 
-function convertToJavaScript(input) {
+function convertToJavaScript() {
+    const input = document.getElementById('input').value;
     if (/^[01\s]+$/.test(input)) {
         // Convert Binary to JavaScript
-        const binary = input.split(' ').map(binary => String.fromCharCode(parseInt(binary, 2))).join('');
-        if (isJavaScript(binary)) {
-            return binary;
-        } else {
-            return 'The converted binary does not represent valid JavaScript code.';
-        }
+        document.getElementById('output').value = 'Converting...';
+        setTimeout(() => {
+            const binary = input.split(' ').map(binary => String.fromCharCode(parseInt(binary, 2))).join('');
+            if (isJavaScript(binary)) {
+                document.getElementById('output').value = binary;
+            } else {
+                alert('The converted binary does not represent valid JavaScript code.');
+                document.getElementById('output').value = '';
+            }
+        }, 1000);
     } else {
-        return 'Please enter valid binary code.';
+        alert('Please enter valid binary code.');
     }
 }
-
-    </script>
-</body>
-</html>
