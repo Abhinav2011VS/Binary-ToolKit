@@ -102,3 +102,7 @@ function goToLengthsPage() {
 function goToHomePage() {
     window.location.href = '/';
 }
+
+function goToTypesPage() {
+    window.location.href = '/types';
+}
