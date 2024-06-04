@@ -151,6 +151,25 @@
         .popup-message {
             font-size: 18px;
         }
+        
+        .custom-menu {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px 0;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .custom-menu div {
+            padding: 5px 20px;
+        }
+
+        .custom-menu div:hover {
+            background-color: #444;
+        }
     </style>
 </head>
 <body>
@@ -185,6 +204,12 @@
         <button onclick="downloadSource()">Download Source Code</button>
         <button onclick="downloadBinary()">Download Binary Code</button>
         <label for="made-by">Made by Abhinav VS</label>
+        <div id="custom-menu" class="custom-menu">
+            <div onclick="copyText()">Copy</div>
+            <div onclick="pasteText()">Paste</div>
+            <div onclick="cutText()">Cut</div>
+            <div onclick="selectAllText()">Select All</div>
+        </div>
     </div>
 
     <div id="popup-container" class="popup-container">
@@ -296,10 +321,66 @@
             document.getElementById("charCount").textContent = inputLength + "/5000";
         });
 
-        // Disable right-click context menu only for the text area
-        document.getElementById("output").addEventListener("contextmenu", function (e) {
-            e.preventDefault();
+        function showPopup(message) {
+            var popupContainer = document.getElementById("popup-container");
+            var popupMessage = document.getElementById("popup-message");
+            popupMessage.textContent = message;
+            popupContainer.style.display = "block";
+            // Fade out after 1 second
+            setTimeout(function () {
+                popupContainer.style.opacity = 0;
+                setTimeout(function () {
+                    popupContainer.style.display = "none";
+                    popupContainer.style.opacity = 1;
+                }, 1000);
+            }, 2000);
+        }
+    </script>
+    <!-- New Script for Right-click Custom Menu -->
+    <script>
+        // Function to handle right-click on textarea
+        document.getElementById("input").addEventListener("contextmenu", function (e) {
+            e.preventDefault(); // Prevent default right-click behavior
+            var menu = document.getElementById("custom-menu");
+            menu.style.top = e.clientY + "px"; // Set menu position
+            menu.style.left = e.clientX + "px";
+            menu.style.display = "block"; // Display the custom menu
         });
+
+        // Function to hide the custom menu
+        document.addEventListener("click", function (e) {
+            var menu = document.getElementById("custom-menu");
+            if (!menu.contains(e.target)) {
+                menu.style.display = "none";
+            }
+        });
+
+        // Function to copy selected text
+        function copyText() {
+            var textarea = document.getElementById("input");
+            textarea.select();
+            document.execCommand("copy");
+        }
+
+        // Function to paste text
+        function pasteText() {
+            var textarea = document.getElementById("input");
+            textarea.focus();
+            document.execCommand("paste");
+        }
+
+        // Function to cut selected text
+        function cutText() {
+            var textarea = document.getElementById("input");
+            textarea.select();
+            document.execCommand("cut");
+        }
+
+        // Function to select all text
+        function selectAllText() {
+            var textarea = document.getElementById("input");
+            textarea.select();
+        }
     </script>
     <script>
         // Disable right-click context menu for the entire document except the text area
@@ -315,22 +396,6 @@
                 showPopup("Inspection or viewing source is disabled.");
             }
         });
-
-        // Function to show the pop-up
-        function showPopup(message) {
-            var popupContainer = document.getElementById("popup-container");
-            var popupMessage = document.getElementById("popup-message");
-            popupMessage.textContent = message;
-            popupContainer.style.display = "block";
-            // Fade out after 1 second
-            setTimeout(function () {
-                popupContainer.style.opacity = 0;
-                setTimeout(function () {
-                    popupContainer.style.display = "none";
-                    popupContainer.style.opacity = 1;
-                }, 1000);
-            }, 2000);
-        }
     </script>
 </body>
 </html>
