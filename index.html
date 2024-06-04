@@ -166,12 +166,14 @@
         .custom-menu div {
             padding: 8px 12px;
             cursor: pointer;
-            z-index: 9999;
         }
 
         .custom-menu div:hover {
             background: #444; /* Change background color on hover */
-            z-index: 9999;
+        }
+
+        .container:hover .custom-menu {
+            display: block;
         }
     </style>
 </head>
@@ -324,6 +326,14 @@
             document.getElementById("charCount").textContent = inputLength + "/5000";
         });
 
+        // Update event listener for the context menu to prevent it from showing inside textarea
+        document.addEventListener("contextmenu", function (e) {
+            if (!e.target.matches("textarea")) {
+                e.preventDefault();
+                showPopup("Right Click is disabled");
+            }
+        });
+
         function showPopup(message) {
             var popupContainer = document.getElementById("popup-container");
             var popupMessage = document.getElementById("popup-message");
@@ -365,11 +375,13 @@
             document.execCommand("copy");
         }
 
-        // Function to paste text
-        function pasteText() {
-            var textarea = document.getElementById("input");
-            textarea.focus();
-            document.execCommand("paste");
+        // Add the paste functionality using clipboard API
+        function pasteContent() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById("input").value = text;
+            }).catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
         }
 
         // Function to cut selected text
