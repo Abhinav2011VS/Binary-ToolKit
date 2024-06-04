@@ -124,20 +124,37 @@ function showPopup(message) {
     }, 2000);
 }
 
-// Function to handle right-click on textarea
+// Function to handle right-click on input textarea
 document.getElementById("input").addEventListener("contextmenu", function (e) {
     e.preventDefault(); // Prevent default right-click behavior
-    var menu = document.getElementById("custom-menu");
+    var menu = document.getElementById("custom-menu-input");
     menu.style.top = e.clientY + "px"; // Set menu position
     menu.style.left = e.clientX + "px";
     menu.style.display = "block"; // Display the custom menu
 });
 
-// Function to hide the custom menu
+// Function to handle right-click on output textarea
+document.getElementById("output").addEventListener("contextmenu", function (e) {
+    e.preventDefault(); // Prevent default right-click behavior
+    var menu = document.getElementById("custom-menu-output");
+    menu.style.top = e.clientY + "px"; // Set menu position
+    menu.style.left = e.clientX + "px";
+    menu.style.display = "block"; // Display the custom menu
+});
+
+// Function to hide the custom menu for input textarea
 document.addEventListener("click", function (e) {
-    var menu = document.getElementById("custom-menu");
-    if (!menu.contains(e.target)) {
-        menu.style.display = "none";
+    var menuInput = document.getElementById("custom-menu-input");
+    if (!menuInput.contains(e.target)) {
+        menuInput.style.display = "none";
+    }
+});
+
+// Function to hide the custom menu for output textarea
+document.addEventListener("click", function (e) {
+    var menuOutput = document.getElementById("custom-menu-output");
+    if (!menuOutput.contains(e.target)) {
+        menuOutput.style.display = "none";
     }
 });
 
@@ -149,7 +166,7 @@ function copyText() {
 }
 
 // Add the paste functionality using clipboard API
-function pasteContent() {
+function pasteText() {
     navigator.clipboard.readText().then(text => {
         document.getElementById("input").value = text;
     }).catch(err => {
@@ -167,6 +184,12 @@ function cutText() {
 // Function to select all text
 function selectAllText() {
     var textarea = document.getElementById("input");
+    textarea.select();
+}
+
+// Function to select all text for output
+function selectAllOutput() {
+    var textarea = document.getElementById("output");
     textarea.select();
 }
 
