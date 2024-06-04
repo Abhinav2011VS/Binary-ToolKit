@@ -124,24 +124,6 @@
         label {
             font-size: 18px;
         }
-        /* Credits Text */
-        .credits {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            animation: slideCredits 15s linear infinite; /* Animation */
-        }
-
-        @keyframes slideCredits {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-100%);
-            }
-        }
     </style>
 </head>
 <body>
@@ -175,12 +157,7 @@
         <br>
         <button onclick="downloadSource()">Download Source Code</button>
         <button onclick="downloadBinary()">Download Binary Code</button>
-    </div>
-
-    <div class="credits">
-        <p>The Binary Toolkit</p>
-        <p>Made by</p>
-        <p>Abhinav VS</p>
+        <label for="made-by">Made by Abhinav VS</label>
     </div>
 
     <script>
