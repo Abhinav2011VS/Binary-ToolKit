@@ -95,12 +95,6 @@ function clearFields() {
     document.getElementById("output").value = "";
 }
 
-// Update character count display
-document.getElementById("input").addEventListener("input", function() {
-    var inputLength = this.value.length;
-    document.getElementById("charCount").textContent = inputLength + "/1000";
-});
-
 function goToLengthsPage() {
     window.location.href = '/lengths';
 }
