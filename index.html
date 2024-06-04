@@ -179,6 +179,12 @@
         <textarea id="input" placeholder="Enter text or binary" maxlength="5000"></textarea>
         <span id="charCount">0/5000</span>
         <br>
+        <div id="custom-menu" class="custom-menu">
+            <div onclick="copyText()">Copy</div>
+            <div onclick="pasteText()">Paste</div>
+            <div onclick="cutText()">Cut</div>
+            <div onclick="selectAllText()">Select All</div>
+        </div>
         <label for="charSet">Character Set:</label>
         <select id="charSet">
             <option value="ascii">ASCII</option>
@@ -204,12 +210,6 @@
         <button onclick="downloadSource()">Download Source Code</button>
         <button onclick="downloadBinary()">Download Binary Code</button>
         <label for="made-by">Made by Abhinav VS</label>
-        <div id="custom-menu" class="custom-menu">
-            <div onclick="copyText()">Copy</div>
-            <div onclick="pasteText()">Paste</div>
-            <div onclick="cutText()">Cut</div>
-            <div onclick="selectAllText()">Select All</div>
-        </div>
     </div>
 
     <div id="popup-container" class="popup-container">
