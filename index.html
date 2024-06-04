@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Binary Toolkit</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
 </head>
 <body>
+    <div id="custom-menu" class="custom-menu">
+        <div onclick="copyText()">Copy</div>
+        <div onclick="pasteText()">Paste</div>
+        <div onclick="cutText()">Cut</div>
+        <div onclick="selectAllText()">Select All</div>
+    </div>
+
     <div class="container">
         <h1>The Binary Toolkit</h1>
         <label for="input">Input:</label>
         <textarea id="input" placeholder="Enter text or binary" maxlength="5000"></textarea>
         <span id="charCount">0/5000</span>
         <br>
-        <div id="custom-menu" class="custom-menu">
-            <div onclick="copyText()">Copy</div>
-            <div onclick="pasteText()">Paste</div>
-            <div onclick="cutText()">Cut</div>
-            <div onclick="selectAllText()">Select All</div>
-        </div>
         <label for="charSet">Character Set:</label>
         <select id="charSet">
             <option value="ascii">ASCII</option>
