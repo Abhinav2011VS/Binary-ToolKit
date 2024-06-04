@@ -114,8 +114,10 @@ button:active {
 }
 
 textarea {
-    max-height: 150px;
-    min-height: 150px;
+    max-height: 200px;
+    min-height: 200px;
+    max-width: calc(100% - 40px);
+    min-width: calc(100% - 40px);
 }
 
 label {
