@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binary Converter</title>
+    <title>The Binary Toolkit</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -128,10 +128,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Binary Converter</h1>
+        <h1>The Binary Toolkit</h1>
         <label for="input">Input:</label>
-        <textarea id="input" placeholder="Enter text or binary" maxlength="1000"></textarea>
-        <span id="charCount">0/1000</span>
+        <textarea id="input" placeholder="Enter text or binary" maxlength="5000"></textarea>
+        <span id="charCount">0/5000</span>
         <br>
         <label for="charSet">Character Set:</label>
         <select id="charSet">
@@ -261,7 +261,7 @@
         // Update character count display
         document.getElementById("input").addEventListener("input", function() {
             var inputLength = this.value.length;
-            document.getElementById("charCount").textContent = inputLength + "/1000";
+            document.getElementById("charCount").textContent = inputLength + "/5000";
         });
     </script>
 </body>
