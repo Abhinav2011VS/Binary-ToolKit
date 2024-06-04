@@ -1,4 +1,66 @@
-function isJavaScript(input) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript to Binary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JavaScript to Binary / Binary to JavaScript Converter</h1>
+        <textarea id="input" placeholder="Enter JavaScript or Binary"></textarea>
+        <button onclick="convertToBinary()">Convert to Binary</button>
+        <button onclick="convertToJavaScript()">Convert to JavaScript</button>
+        <textarea id="output" placeholder="Converted Output" readonly></textarea>
+    </div>
+
+    <script>
+        function isJavaScript(input) {
     try {
         // Try to parse the input as JavaScript
         new Function(input);
@@ -32,3 +94,7 @@ function convertToJavaScript(input) {
         return 'Please enter valid binary code.';
     }
 }
+
+    </script>
+</body>
+</html>
