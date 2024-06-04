@@ -60,16 +60,49 @@
     </div>
 
     <script>
+        function isJavaScript(input) {
+            try {
+                // Try to parse the input as JavaScript
+                new Function(input);
+                return true;
+            } catch (error) {
+                // If parsing fails, it's not JavaScript
+                return false;
+            }
+        }
+
         function convertToBinary() {
             const input = document.getElementById('input').value;
-            const binary = input.split('').map(char => char.charCodeAt(0).toString(2)).join(' ');
-            document.getElementById('output').value = binary;
+            if (isJavaScript(input)) {
+                // Convert JavaScript to Binary
+                document.getElementById('output').value = 'Converting...';
+                setTimeout(() => {
+                    const binary = input.split('').map(char => char.charCodeAt(0).toString(2)).join(' ');
+                    document.getElementById('output').value = binary;
+                }, 1000);
+            } else {
+                alert('Please enter valid JavaScript code.');
+            }
         }
 
         function convertToJavaScript() {
             const input = document.getElementById('input').value;
-            const binary = input.split(' ').map(binary => String.fromCharCode(parseInt(binary, 2))).join('');
-            document.getElementById('output').value = binary;
+            // If input starts with 0 or 1 and contains only 0, 1, or space, consider it as binary
+            if (/^[01\s]+$/.test(input)) {
+                // Convert Binary to JavaScript
+                document.getElementById('output').value = 'Converting...';
+                setTimeout(() => {
+                    const binary = input.split(' ').map(binary => String.fromCharCode(parseInt(binary, 2))).join('');
+                    if (isJavaScript(binary)) {
+                        document.getElementById('output').value = binary;
+                    } else {
+                        alert('The converted binary does not represent valid JavaScript code.');
+                        document.getElementById('output').value = '';
+                    }
+                }, 1000);
+            } else {
+                alert('Please enter valid binary code.');
+            }
         }
     </script>
 </body>
