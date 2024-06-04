@@ -128,27 +128,29 @@
             font-size: 18px;
         }
 
-        /* Popup Message */
-        .popup {
+        /* Styles for the pop-up */
+        .popup-container {
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.60);
             padding: 20px;
-            opacity: 0.6;
-            color: #fff;
-            z-index: 1000;
-            pointer-events: none; /* Disable pointer events */
-            transition: opacity 0.5s ease;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            z-index: 9999;
         }
 
-        /* Show Popup */
-        .show-popup {
-            opacity: 1;
+        .popup-heading {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
+        .popup-message {
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -185,20 +187,12 @@
         <label for="made-by">Made by Abhinav VS</label>
     </div>
 
-    <!-- Popup Message -->
-    <div id="popupMessage" class="popup"></div>
+    <div id="popup-container" class="popup-container">
+        <div class="popup-heading">Warning!</div>
+        <div id="popup-message" class="popup-message"></div>
+    </div>
 
     <script>
-        // Popup Message
-        function showPopup(message) {
-            const popup = document.getElementById("popupMessage");
-            popup.textContent = message;
-            popup.classList.add("show-popup");
-            setTimeout(() => {
-                popup.classList.remove("show-popup");
-            }, 3000);
-        }
-
         function convertToBinary() {
             var inputText = document.getElementById("input").value;
             var charSet = document.getElementById("charSet").value;
@@ -301,19 +295,37 @@
             var inputLength = this.value.length;
             document.getElementById("charCount").textContent = inputLength + "/5000";
         });
-
-        // Right-Click Prevention
-        window.addEventListener('contextmenu', function (e) {
+    </script>
+    <script>
+        // Disable right-click context menu
+        document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
+            showPopup("Right Click is disabled");
         });
 
-        // Disable Inspect
-        document.onkeydown = function(e) {
-            if (e.ctrlKey && 
-               (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 123 || e.keyCode === 73 || e.keyCode === 67)) {
-                return false;
+        // Disable Ctrl+U, F12, and Fn+F12
+        document.addEventListener("keydown", function (e) {
+            if ((e.ctrlKey && e.key === "u") || e.key === "F12" || (e.key === "F12" && e.key === "Control")) {
+                e.preventDefault();
+                showPopup("Inspection or viewing source is disabled.");
             }
-        };
+        });
+
+        // Function to show the pop-up
+        function showPopup(message) {
+            var popupContainer = document.getElementById("popup-container");
+            var popupMessage = document.getElementById("popup-message");
+            popupMessage.textContent = message;
+            popupContainer.style.display = "block";
+            // Fade out after 1 second
+            setTimeout(function () {
+                popupContainer.style.opacity = 0;
+                setTimeout(function () {
+                    popupContainer.style.display = "none";
+                    popupContainer.style.opacity = 1;
+                }, 1000);
+            }, 2000);
+        }
     </script>
 </body>
 </html>
