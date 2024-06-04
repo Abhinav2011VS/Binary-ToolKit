@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Binary Toolkit</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div id="custom-menu" class="custom-menu">
-        <div onclick="copyText()">Copy</div>
-        <div onclick="pasteText()">Paste</div>
-        <div onclick="cutText()">Cut</div>
-        <div onclick="selectAllText()">Select All</div>
-    </div>
-
     <div class="container">
         <h1>The Binary Toolkit</h1>
         <label for="input">Input:</label>
@@ -45,6 +38,18 @@
         <button onclick="downloadSource()">Download Source Code</button>
         <button onclick="downloadBinary()">Download Binary Code</button>
         <label for="made-by">Made by Abhinav VS</label>
+    </div>
+
+    <div id="custom-menu-input" class="custom-menu">
+        <div onclick="copyText()">Copy</div>
+        <div onclick="pasteText()">Paste</div>
+        <div onclick="cutText()">Cut</div>
+        <div onclick="selectAllText()">Select All</div>
+    </div>
+
+    <div id="custom-menu-output" class="custom-menu">
+        <div onclick="copyOutput()">Copy</div>
+        <div onclick="selectAllOutput()">Select All</div>
     </div>
 
     <div id="popup-container" class="popup-container">
