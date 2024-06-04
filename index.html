@@ -155,20 +155,21 @@
         .custom-menu {
             display: none;
             position: absolute;
-            background-color: #333;
-            color: #fff;
+            z-index: 9999; /* Ensure it appears above everything */
+            background: #333; /* Background color */
             border-radius: 5px;
             padding: 5px 0;
-            cursor: pointer;
-            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+            color: #fff;
         }
 
         .custom-menu div {
-            padding: 5px 20px;
+            padding: 8px 12px;
+            cursor: pointer;
         }
 
         .custom-menu div:hover {
-            background-color: #444;
+            background: #444; /* Change background color on hover */
         }
     </style>
 </head>
