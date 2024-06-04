@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Binary Toolkit - Different Typess</title>
+    <title>The Binary Toolkit - Different Input Lengths</title>
     <link rel="stylesheet" href="/styles.css">
     <style>
         btn-length:focus {
@@ -81,13 +81,14 @@
         <button onclick="goTo5000000000Page()" class="btn-length" id="btn-length">5,000,000,000 characters</button>
         <button onclick="goTo10000000000Page()" class="btn-length" id="btn-length">10,000,000,000 characters</button>
         <button onclick="goToHomePage()">Home</button>
+        <button onclick="goToTypePage()">Types Page</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
 
     <script src="/script.js"></script>
     <script>
-        function goToHomePage() {
-            window.location.href = '/';
+        function goToTypePage() {
+            window.location.href = '/types';
         }
         function goTo10Page() {
             window.location.href = '/toolkit/lengths/10';
