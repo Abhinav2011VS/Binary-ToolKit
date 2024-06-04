@@ -295,9 +295,14 @@
             var inputLength = this.value.length;
             document.getElementById("charCount").textContent = inputLength + "/5000";
         });
+
+        // Disable right-click context menu only for the text area
+        document.getElementById("output").addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
     </script>
     <script>
-        // Disable right-click context menu
+        // Disable right-click context menu for the entire document except the text area
         document.addEventListener("contextmenu", function (e) {
             e.preventDefault();
             showPopup("Right Click is disabled");
