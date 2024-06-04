@@ -98,7 +98,7 @@ function clearFields() {
 // Update character count display
 document.getElementById("input").addEventListener("input", function() {
     var inputLength = this.value.length;
-    document.getElementById("charCount").textContent = inputLength + "/5000";
+    document.getElementById("charCount").textContent = inputLength + "/1000";
 });
 
 // Update event listener for the context menu to prevent it from showing inside textarea
