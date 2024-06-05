@@ -12,46 +12,57 @@
                 url('/data/fonts/experimental.woff') format('woff'),
                 url('/data/fonts/experimental.woff2') format('woff2');
         }
-        /* Define button styles */
-        .btn-length:focus,
-        .btn-length:hover,
-        .btn-length-big:focus,
-        .btn-length-big:hover {
+        btn-length:focus, .btn-length:focus {
             outline: none;
+            background-color: rgba(219, 179, 91, 0.6);
         }
-        .btn-length,
-        .btn-length-big {
+        btn-length:hover, .btn-length:focus {
+            outline: none;
+            background-color: rgba(219, 179, 91, 0.8);
+        }
+        btn-length, .btn-length {
+            width: calc(50% - 15px);
             padding: 10px;
             margin: 10px 0;
             border: none;
             border-radius: 5px;
+            background-color: rgba(219, 179, 91, 0.4);
+            color: #fff;
+            font-size: 16px;
             transition: all 0.3s ease;
             cursor: pointer;
             height: 75px;
         }
-        .btn-length {
-            width: calc(50% - 15px);
-            background-color: rgba(219, 179, 91, 0.4);
-            color: #fff;
-            font-size: 16px;
+        btn-length-big:focus, .btn-length-big:focus {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.6);
         }
-        .btn-length-big {
+        btn-length-big:hover, .btn-length-big:hover {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.8);
+        }
+        btn-length-big, .btn-length-big {
             width: calc(100% - 30px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
             background-color: rgba(195, 0, 0, 0.4);
             color: #fff;
             font-size: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* Apply custom font to the button text */
-        .btn-length-big ggg {
-            font-family: 'Experimental', sans-serif;
-            margin: 0 5px; /* Adjust spacing between image and text */
-        }
-        /* Adjust image margin */
-        .img-experimental {
+        .img-experimental, img-experimental {
+            z-index: 20;
             margin-right: 5px;
+        }
+        ggg {
+            font-family: 'Experimental', sans-serif;
         }
     </style>
 </head>
@@ -61,12 +72,7 @@
         <p>Select any type:</p>
         <button onclick="goToLanguagesPage()" class="btn-length" id="btn-length">Coding Languages</button>
         <button onclick="goToLengthsPage()" class="btn-length" id="btn-length">Different Input Limits</button>
-        <!-- Adjusted button with custom font applied -->
-        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big">
-            <img class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="50px" height="50px">
-            <ggg>Experimental</ggg>
-            <img class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="50px" height="50px">
-        </button>
+        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big"><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="50px" height="50px"><ggg>Experimental</ggg><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="50px" height="50px"></button>
         <button onclick="goToHomePage()">Home</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
