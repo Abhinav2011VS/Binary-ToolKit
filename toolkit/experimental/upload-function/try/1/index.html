@@ -9,44 +9,22 @@
 <body>
     <div class="container">
         <h1>The Binary Toolkit</h1>
-        <!-- Option to upload a text file -->
-        <input type="file" id="fileInput" accept=".txt" style="display: none;">
-        <button onclick="document.getElementById('fileInput').click()">Upload Text File</button>
+        <label for="fileInput">Upload File:</label>
+        <input type="file" id="fileInput" style="display: none;">
+        <button onclick="uploadFile()">Upload File</button>
         <span id="fileStatus"></span>
-        <br><br>
+        <br>
         <label for="input">Input:</label>
         <textarea id="input" placeholder="Enter text or binary" maxlength="1000"></textarea>
         <span id="charCount">0/1000</span>
         <br>
-        <label for="charSet">Character Set:</label>
-        <select id="charSet">
-            <option value="ascii">ASCII</option>
-            <option value="unicode">Unicode</option>
-        </select>
-        <br>
-        <label for="binaryOption">Binary Representation:</label>
-        <select id="binaryOption">
-            <option value="standard">Standard (Recommended)</option>
-            <option value="leadingZeros">Leading Zeros</option>
-            <option value="asciiCodes">ASCII Codes</option>
-            <option value="unicodeCodes">Unicode Codes</option>
-        </select>
-        <br>
-        <button onclick="convertToBinary()">To Binary</button>
-        <button onclick="convertFromBinary()">From Binary</button>
-        <button onclick="clearFields()">Clear</button>
-        <button onclick="copyOutput()">Copy Output</button>
-        <br>
         <label for="output">Output:</label>
         <textarea id="output" readonly></textarea>
         <br>
-        <!-- Download button will be displayed dynamically based on file upload status -->
-        <button id="downloadBtn" onclick="downloadBinary()" style="display: none;">Download Binary Code</button>
+        <button onclick="downloadBinary()" id="downloadBtn">Download Binary Code</button>
         <button onclick="goToTypesPage()">Get More Types</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
-    <script src="/script.js"></script>
-    <script src="/main.js"></script>
     <script src="upload.js"></script>
 </body>
 </html>
