@@ -90,6 +90,12 @@
             cursor: pointer;
             height: 75px;
         }
+        .img-experimental {
+            z-index: 20;
+        }
+        img-experimental {
+            z-index: 20;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +104,7 @@
         <p>Select any type:</p>
         <button onclick="goToLanguagesPage()" class="btn-length" id="btn-length">Coding Languages</button>
         <button onclick="goToLengthsPage()" class="btn-length" id="btn-length">Different Input Limits</button>
-        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big"><img src="/data/gif/experimental/alert.gif" alt="Experimental!" width="18px" height="18px">Experimental<img src="/data/gif/experimental/alert.gif" alt="Experimental!" width="18px" height="18px"></button>
+        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big"><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px">Experimental<img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px"></button>
         <button onclick="goToHomePage()">Home</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
