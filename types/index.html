@@ -48,6 +48,46 @@
             cursor: pointer;
             height: 75px;
         }
+        btn-length-big:focus {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.6);
+        }
+        btn-length-big:hover {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.8);
+        }
+        btn-length-big {
+            width: calc(50% - 15px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(195, 0, 0, 0.4);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-length-big:focus {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.6);
+        }
+        .btn-length-big:hover {
+            outline: none;
+            background-color: rgba(195, 0, 0, 0.8);
+        }
+        .btn-length-big {
+            width: calc(100% - 30px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(195, 0, 0, 0.4);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -56,6 +96,7 @@
         <p>Select any type:</p>
         <button onclick="goToLanguagesPage()" class="btn-length" id="btn-length">Coding Languages</button>
         <button onclick="goToLengthsPage()" class="btn-length" id="btn-length">Different Input Limits</button>
+        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big">Experimental</button>
         <button onclick="goToHomePage()">Home</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
@@ -70,6 +111,9 @@
         }
         function goToLengthsPage() {
             window.location.href = '/toolkit/lengths';
+        }
+        function goToExperimentalPage() {
+            window.location.href = '/toolkit/experimental';
         }
     </script>
 </body>
