@@ -14,15 +14,8 @@
         <button onclick="document.getElementById('fileInput').click()">Upload File</button>
         <span id="fileStatus"></span>
         <br>
-        <label for="input">Input:</label>
-        <textarea id="input" placeholder="Enter text or binary" maxlength="1000"></textarea>
-        <span id="charCount">0/1000</span>
-        <br>
-        <label for="output">Output:</label>
-        <textarea id="output" readonly></textarea>
-        <br>
-        <button onclick="downloadBinary()" id="downloadBtn">Download Binary Code</button>
-        <button onclick="goToTypesPage()">Get More Types</button>
+        <button onclick="convertToBinary()">Convert to Binary</button>
+        <button onclick="goToReversePage()">Go to Reverse Page</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
     <script>
@@ -30,17 +23,12 @@
         function handleFileUpload(event) {
             const file = event.target.files[0];
             const fileStatus = document.getElementById('fileStatus');
-            const downloadBtn = document.getElementById('downloadBtn');
 
             if (file) {
                 fileStatus.textContent = `File ${file.name} uploaded`;
-                downloadBtn.textContent = 'Converting...';
-                convertToBinary(file);
             } else {
                 fileStatus.textContent = '';
-                downloadBtn.textContent = 'Download Binary Code';
                 document.getElementById("input").value = "";
-                document.getElementById("output").value = "";
             }
         }
 
@@ -49,60 +37,47 @@
             document.getElementById('fileInput').click();
         }
 
-        // Function to convert file content to binary
-        function convertToBinary(file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const binary = convertTextToBinary(event.target.result);
-                document.getElementById("output").value = binary.trim();
-                document.getElementById('downloadBtn').textContent = 'Download Binary Code';
-            };
-            reader.readAsText(file);
-        }
-
-        // Function to download binary code
-        function downloadBinary() {
-            const inputText = document.getElementById("input").value.trim();
-            const fileName = document.getElementById('fileInput').files[0].name.replace('.txt', '-binary.txt');
-            const binaryOutput = document.getElementById("output").value.trim();
-            downloadFile(fileName, binaryOutput);
-        }
-
-        // Function to download file
-        function downloadFile(filename, text) {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', filename);
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-        }
-
-        // Function to convert text to binary
-        function convertTextToBinary(text) {
-            let binary = '';
-            for (let i = 0; i < text.length; i++) {
-                binary += text[i].charCodeAt(0).toString(2) + ' ';
-            }
-            return binary;
-        }
-
         // Event listener for file input change
         document.getElementById('fileInput').addEventListener('change', handleFileUpload);
 
-        // Update character count display
-        document.getElementById('input').addEventListener('input', function() {
-            const inputLength = this.value.length;
-            document.getElementById('charCount').textContent = inputLength + '/1000';
-        });
+        // Function to convert file to binary text
+        function convertToBinary() {
+            const file = document.getElementById('fileInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const binaryText = convertToBinaryText(event.target.result);
+                    downloadBinaryFile(binaryText);
+                };
+                reader.readAsBinaryString(file);
+            } else {
+                alert('Please upload a file.');
+            }
+        }
 
-        // Function to navigate to types page
-        function goToTypesPage() {
-            window.location.href = '/types';
+        // Function to convert file content to binary text
+        function convertToBinaryText(fileContent) {
+            let binaryText = '';
+            for (let i = 0; i < fileContent.length; i++) {
+                binaryText += fileContent.charCodeAt(i).toString(2) + ' ';
+            }
+            return binaryText;
+        }
+
+        // Function to download binary file
+        function downloadBinaryFile(binaryText) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(binaryText));
+            element.setAttribute('download', 'binary.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Function to navigate to reverse page
+        function goToReversePage() {
+            window.location.href = 'reverse.html';
         }
     </script>
 </body>
