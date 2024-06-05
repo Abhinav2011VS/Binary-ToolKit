@@ -12,17 +12,36 @@
                 url('/data/fonts/experimental.woff') format('woff'),
                 url('/data/fonts/experimental.woff2') format('woff2');
         }
-        btn-length:focus,
+        btn-length:focus {
+            outline: none;
+            background-color: rgba(219, 179, 91, 0.6);
+        }
+        btn-length:hover {
+            outline: none;
+            background-color: rgba(219, 179, 91, 0.8);
+        }
+        btn-length {
+            width: calc(50% - 15px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(219, 179, 91, 0.4);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 75px;
+        }
         .btn-length:focus {
             outline: none;
             background-color: rgba(219, 179, 91, 0.6);
         }
-        btn-length:hover,
-        .btn-length:focus {
+        .btn-length:hover {
             outline: none;
             background-color: rgba(219, 179, 91, 0.8);
         }
-        btn-length, .btn-length {
+        .btn-length {
             width: calc(50% - 15px);
             padding: 10px;
             margin: 10px 0;
