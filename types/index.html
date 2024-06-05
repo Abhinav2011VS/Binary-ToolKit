@@ -8,9 +8,9 @@
     <style>
         @font-face {
             font-family: 'Experimental';
-            src: url('data/fonts/experimental.ttf') format('truetype'),
-                url('data/fonts/experimental.woff') format('woff'),
-                url('data/fonts/experimental.woff2') format('woff2');
+            src: url('/data/fonts/experimental.ttf') format('truetype'),
+                url('/data/fonts/experimental.woff') format('woff'),
+                url('/data/fonts/experimental.woff2') format('woff2');
         }
         btn-length:focus {
             outline: none;
@@ -70,7 +70,6 @@
             border-radius: 5px;
             background-color: rgba(195, 0, 0, 0.4);
             color: #fff;
-            font-family: 'Experimental', sans-serif;
             font-size: 16px;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -97,7 +96,6 @@
             color: #fff;
             font-size: 16px;
             transition: all 0.3s ease;
-            font-family: 'Experimental', sans-serif;
             cursor: pointer;
             height: 75px;
             display: flex;
@@ -112,6 +110,9 @@
             z-index: 20;
             margin-right: 5px;
         }
+        ggg {
+            font-family: 'Experimental', sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -120,7 +121,7 @@
         <p>Select any type:</p>
         <button onclick="goToLanguagesPage()" class="btn-length" id="btn-length">Coding Languages</button>
         <button onclick="goToLengthsPage()" class="btn-length" id="btn-length">Different Input Limits</button>
-        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big"><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px"><b>Experimental</b><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px"></button>
+        <button onclick="goToExperimentalPage()" class="btn-length-big" id="btn-length-big"><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px"><ggg>Experimental</ggg><img id="img-experimental" class="img-experimental" src="/data/gif/experimental/alert.gif" alt="Experimental!" width="45px" height="45px"></button>
         <button onclick="goToHomePage()">Home</button>
         <label for="made-by">Made by Abhinav VS</label>
     </div>
