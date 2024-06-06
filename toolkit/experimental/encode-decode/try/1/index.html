@@ -79,6 +79,7 @@
             <h2>Decode File</h2>
             <input type="file" id="encodedFileInput" accept=".txt">
             <textarea id="encodedTextInput" placeholder="Or paste encoded text here"></textarea>
+            <input type="password" id="decryptionKey" placeholder="Enter decryption key">
             <button onclick="decodeFile()">Decode and Download</button>
         </div>
     </div>
@@ -100,11 +101,12 @@
             reader.onload = function(event) {
                 try {
                     const fileContent = event.target.result;
-                    const encodedContent = btoa(fileContent);  // Base64 encode the file content
                     const fileInfo = JSON.stringify({ 
                         name: customName || file.name,
                         type: file.type,
-                        content: encodedContent
+                        size: file.size,
+                        lastModified: file.lastModified,
+                        content: btoa(fileContent)
                     });
                     encodedDataTextarea.value = btoa(fileInfo);  // Base64 encode the JSON string
                     alert('File encoded successfully.');
@@ -131,12 +133,13 @@
                 return;
             }
 
-            const customName = document.getElementById('customName').value || 'encoded_file';
-            const blob = new Blob([encodedData], { type: 'text/plain' });
+            const decodedData = atob(encodedData);
+            const fileInfo = JSON.parse(decodedData);
+            const blob = new Blob([atob(fileInfo.content)], { type: fileInfo.type });
             const link = document.createElement('a');
 
             link.href = URL.createObjectURL(blob);
-            link.download = `${customName}.txt`;
+            link.download = fileInfo.name;
             link.click();
         }
 
@@ -169,10 +172,9 @@
 
         function decodeAndDownload(encodedData) {
             try {
-                const decryptedData = atob(encodedData);  // Base64 decode the data
-                const fileInfo = JSON.parse(decryptedData);
-                const fileContent = atob(fileInfo.content);
-                const blob = new Blob([fileContent], { type: fileInfo.type });
+                const decodedData = atob(encodedData);
+                const fileInfo = JSON.parse(decodedData);
+                const blob = new Blob([atob(fileInfo.content)], { type: fileInfo.type });
                 const link = document.createElement('a');
 
                 link.href = URL.createObjectURL(blob);
