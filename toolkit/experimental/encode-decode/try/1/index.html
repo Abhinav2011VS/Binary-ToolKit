@@ -110,10 +110,9 @@
                         type: file.type,
                         size: file.size,
                         lastModified: file.lastModified,
-                        properties: JSON.stringify(file),
-                        content: encrypt(fileContent, encryptionKey)
+                        content: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Latin1.parse(fileContent)) // Convert to Base64
                     });
-                    encodedDataTextarea.value = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString();
+                    encodedDataTextarea.value = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString(); // Encrypt
                     alert('File encoded successfully.');
                 } catch (error) {
                     alert('Failed to encode the file. Please try again.');
@@ -140,7 +139,7 @@
             try {
                 const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
                 const fileInfo = JSON.parse(decryptedData);
-                const blob = new Blob([decrypt(fileInfo.content, decryptionKey)], { type: fileInfo.type });
+                const blob = new Blob([CryptoJS.enc.Latin1.parse(CryptoJS.enc.Base64.parse(fileInfo.content).toString())], { type: fileInfo.type }); // Convert back to binary
                 const link = document.createElement('a');
 
                 link.href = URL.createObjectURL(blob);
@@ -183,7 +182,7 @@
             try {
                 const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
                 const fileInfo = JSON.parse(decryptedData);
-                const blob = new Blob([decrypt(fileInfo.content, decryptionKey)], { type: fileInfo.type });
+                const blob = new Blob([CryptoJS.enc.Latin1.parse(CryptoJS.enc.Base64.parse(fileInfo.content).toString())], { type: fileInfo.type }); // Convert back to binary
                 const link = document.createElement('a');
 
                 link.href = URL.createObjectURL(blob);
@@ -197,14 +196,6 @@
 
         function getFileExtension(filename) {
             return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
-        }
-
-        function encrypt(data, key) {
-            return CryptoJS.AES.encrypt(data, key).toString();
-        }
-
-        function decrypt(data, key) {
-            return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
         }
     </script>
 </body>
