@@ -18,21 +18,26 @@ function encodeFile() {
     const reader = new FileReader();
 
     reader.onload = function(event) {
-        const fileContent = event.target.result;
-        const encodedContent = btoa(fileContent);  // Encode the file content in base64
-        const fileInfo = JSON.stringify({ 
-            name: customName || file.name,
-            type: file.type,
-            content: encodedContent
-        });
-        const encryptedData = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString();
-        encodedDataTextarea.value = encryptedData;  // Display the encrypted data
+        try {
+            const fileContent = event.target.result;
+            const encodedContent = btoa(fileContent);  // Base64 encode the file content
+            const fileInfo = JSON.stringify({ 
+                name: customName || file.name,
+                type: file.type,
+                content: encodedContent
+            });
+            const encryptedData = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString();
+            encodedDataTextarea.value = encryptedData;  // Display the encrypted data
+            alert('File encoded successfully.');
+        } catch (error) {
+            alert('Failed to encode the file. Please try again.');
+        }
     };
 
     if (file.type.startsWith('text/')) {
         reader.readAsText(file);
     } else {
-        reader.readAsBinaryString(file);
+        reader.readAsDataURL(file);  // Read binary files as data URL
     }
 }
 
@@ -92,6 +97,7 @@ function decodeAndDownload(encodedData, decryptionKey) {
         link.href = URL.createObjectURL(blob);
         link.download = fileInfo.name;
         link.click();
+        alert('File decoded and downloaded successfully.');
     } catch (error) {
         alert('Failed to decode the file. Please make sure the encoded data and decryption key are correct.');
     }
