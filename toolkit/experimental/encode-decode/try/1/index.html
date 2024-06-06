@@ -86,117 +86,79 @@
         </div>
     </div>
 
-    <script>
-        function encodeFile() {
-            const fileInput = document.getElementById('fileInput');
-            const customName = document.getElementById('customName').value;
-            const encryptionKey = document.getElementById('encryptionKey').value;
-            const encodedDataTextarea = document.getElementById('encodedData');
+    <!-- File to Base64 Converter -->
+    <section>
+        <main>
+            <article>
+                <h1>File to Base64</h1>
+                <div class="pageheader">
+                    <a href="#comments">Comments: 58</a>
+                    | <a href="#form-comment-main" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                        <meta itemprop="itemReviewed" content="File to Base64" />
+                        <meta itemprop="ratingCount" content="43" />
+                        Rating: <span itemprop="ratingValue">4.6</span>/<span itemprop="bestRating">5</span>
+                    </a>
+                </div>
+                <p>Encode file to Base64 online and embed it into any text document such as HTML, JSON, or XML. The fact is that if you do not convert binary to Base64, you won’t be able to insert such data into text files, because binary characters will corrupt text data. It is important to remember that the size of Base64 encoded files increases by 33%. Please note that the file to Base64 encoder accepts any file types with a size of up to 50 MB. If you are looking for the reverse process, check <a href="/converter/decode/file">Base64 to File</a>.</p>
+                <form action="/toolkit/experimental/encode-decode/try/2/" name="base64-converter-encode-file" id="form-base64-converter-encode-file" method="post" class="form-base64" enctype="multipart/form-data">
+                    <div>
+                        <input type="hidden" value="base64-converter-encode-file" name="form_is_submited"><input type="hidden" value="/toolkit/experimental/encode-decode/try/2/" name="form_action_url">
+                        <fieldset id="form-base64-converter-encode-file-fieldset-image">
+                            <label><h5>Local File<b>*</b></h5><input type="file" value="" name="file" id="form-base64-converter-encode-file-file"><span>Choose a file or drag and drop it here</span></label>
+                        </fieldset>
+                        <fieldset id="form-base64-converter-encode-file-fieldset-format">
+    <label><h5>Output Format</h5>
+        <select value="" name="format" id="form-base64-converter-encode-file-format">
+            <option value="txt">Plain text -- just the Base64 value</option>
+            <option value="uri">Data URI -- data:content/type;base64</option>
+            <option value="html_hyperlink">HTML Hyperlink -- &lt;a&gt;&lt;/a&gt;</option>
+            <option value="json">JSON -- {file:{mime,data}}</option>
+            <option value="xml">XML -- &lt;file&gt;&lt;/file&gt;</option>
+        </select>
+    </label>
+</fieldset>
+<button value="1" name="encode" id="form-base64-converter-encode-file-encode">Encode file to Base64</button>
+<fieldset id="form-base64-converter-encode-file-fieldset-base64">
+    <label><h5>Base64</h5><textarea readonly name="base64" id="form-base64-converter-encode-file-base64"></textarea><span>The result of Base64 encoding will appear here</span></label>
+</fieldset>
+</div>
+</article>
 
-            if (fileInput.files.length === 0) {
-                alert('Please select a file to encode.');
-                return;
-            }
+<script class="embedjs">
+    (function (body) {
+        if (body.clientWidth >= 1100) {
+            var header = body.querySelector('header'),
+            nav = header.querySelector('nav>ul'),
+            width = (header.scrollWidth - 20) - header.querySelector('div:first-child').scrollWidth;
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+            if (nav.scrollWidth >= width) {
+                var home = nav.firstElementChild,
+                ul = home.querySelector('ul'),
+                items = header.querySelectorAll('nav>ul>li'),
+                len = items.length;
 
-            reader.onload = function(event) {
-                try {
-                    const fileContent = event.target.result;
-                    const fileInfo = JSON.stringify({
-                        name: customName || file.name,
-                        extension: getFileExtension(file.name),
-                        type: file.type,
-                        size: file.size,
-                        lastModified: file.lastModified,
-                        content: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Latin1.parse(fileContent)) // Convert to Base64
-                    });
-                    encodedDataTextarea.value = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString(); // Encrypt
-                    alert('File encoded successfully.');
-                } catch (error) {
-                    alert('Failed to encode the file. Please try again.');
+                if (!ul) {
+                    home.innerHTML = '<b>' + home.innerHTML + '</b>';
+                    ul = document.createElement('ul');
+                    home.appendChild(ul);
                 }
-            };
 
-            reader.onerror = function() {
-                alert('Failed to read the file. Please try again.');
-            };
-
-            reader.readAsBinaryString(file);
-        }
-
-        function downloadEncodedFile() {
-            const encodedData = document.getElementById('encodedData').value;
-            if (!encodedData) {
-                alert('No encoded data to download.');
-                return;
-            }
-
-            const decryptionKey = prompt('Enter decryption key:');
-            if (!decryptionKey) return;
-
-            try {
-                const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
-                const fileInfo = JSON.parse(decryptedData);
-                const blob = new Blob([CryptoJS.enc.Latin1.parse(CryptoJS.enc.Base64.parse(fileInfo.content).toString())], { type: fileInfo.type }); // Convert back to binary
-                const link = document.createElement('a');
-
-                link.href = URL.createObjectURL(blob);
-                link.download = fileInfo.name;
-                link.click();
-            } catch (error) {
-                alert('Decryption key is incorrect.');
+                do {
+                    ul.appendChild(items[len - 1]);
+                } while (nav.scrollWidth >= width && --len > 0);
             }
         }
+    })(document.body);
+</script>
 
-        function decodeFile() {
-            const fileInput = document.getElementById('encodedFileInput');
-            const encodedTextInput = document.getElementById('encodedTextInput');
-            const decryptionKey = document.getElementById('decryptionKey').value;
-            let encodedData = '';
-
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-
-                reader.onload = function(event) {
-                    encodedData = event.target.result;
-                    decodeAndDownload(encodedData, decryptionKey);
-                };
-
-                reader.onerror = function() {
-                    alert('Failed to read the encoded file. Please try again.');
-                };
-
-                reader.readAsText(file);
-            } else if (encodedTextInput.value.trim() !== '') {
-                encodedData = encodedTextInput.value.trim();
-                decodeAndDownload(encodedData, decryptionKey);
-            } else {
-                alert('Please upload an encoded file or paste encoded text.');
-            }
-        }
-
-        function decodeAndDownload(encodedData, decryptionKey) {
-            try {
-                const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
-                const fileInfo = JSON.parse(decryptedData);
-                const blob = new Blob([CryptoJS.enc.Latin1.parse(CryptoJS.enc.Base64.parse(fileInfo.content).toString())], { type: fileInfo.type }); // Convert back to binary
-                const link = document.createElement('a');
-
-                link.href = URL.createObjectURL(blob);
-                link.download = fileInfo.name;
-                link.click();
-                alert('File decoded and downloaded successfully.');
-            } catch (error) {
-                alert('Decryption key is incorrect.');
-            }
-        }
-
-        function getFileExtension(filename) {
-            return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
-        }
-    </script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script src='//static.base64.guru/js/comments.min.js?1.0.50' async></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134607367-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-134607367-1');
+</script>
 </body>
 </html>
