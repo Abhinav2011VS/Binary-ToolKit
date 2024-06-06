@@ -103,7 +103,7 @@
                     const fileContent = event.target.result;
                     const fileInfo = JSON.stringify({
                         name: customName || file.name,
-                        type: file.type,
+                        type: 'text/plain', // Always convert to text during encoding
                         size: file.size,
                         lastModified: file.lastModified,
                         content: btoa(fileContent)
@@ -184,4 +184,3 @@
     </script>
 </body>
 </html>
-``
