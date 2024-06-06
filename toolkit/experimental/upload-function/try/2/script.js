@@ -37,16 +37,16 @@ function convertToOriginal() {
         downloadOriginalFile(binaryData, file.name);
     };
 
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
 }
 
 function downloadOriginalFile(binaryData, fileName) {
     const blob = new Blob([binaryData], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
 
-    const downloadLink = document.getElementById('downloadLink');
+    const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.download = fileName.replace('.bin', '');
+    downloadLink.download = fileName;
     downloadLink.click();
     
     URL.revokeObjectURL(url);
