@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Encryption</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <input type="file" id="fileInput">
+    <input type="text" id="fileNameInput" placeholder="Enter file name">
+    <button onclick="encodeFile()">Encode File</button>
+    <br>
+    <textarea id="encodedText" rows="10" cols="50" readonly></textarea>
+    <br>
+    <button onclick="downloadEncodedFile()">Download Encoded File</button>
+    <script src="script.js"></script>
+</body>
+</html>
