@@ -47,4 +47,3 @@ function convertToOriginal() {
 
     reader.readAsArrayBuffer(file);
 }
-
