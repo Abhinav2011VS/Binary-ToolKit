@@ -68,15 +68,15 @@ function decodeFile() {
         const url = window.URL.createObjectURL(blob);
         downloadLink.href = url;
         downloadLink.download = originalFileName;
-        downloadLink.style.display = 'none'; // Hide the download link
+        downloadLink.style.display = 'block'; // Display the download link
 
         // Simulate a click event on the download link
-        const clickEvent = new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-        });
-        downloadLink.dispatchEvent(clickEvent);
+        // const clickEvent = new MouseEvent('click', {
+        //     view: window,
+        //     bubbles: true,
+        //     cancelable: true
+        // });
+        // downloadLink.dispatchEvent(clickEvent);
     };
 
     reader.readAsBinaryString(file);
