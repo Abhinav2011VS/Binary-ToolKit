@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Encoder/Decoder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,6 +71,7 @@
             <h2>Encode File</h2>
             <input type="file" id="fileInput" accept="*/*">
             <input type="text" id="customName" placeholder="Enter custom name">
+            <input type="password" id="encryptionKey" placeholder="Enter encryption key" required>
             <button onclick="encodeFile()">Encode</button>
             <textarea id="encodedData" readonly></textarea>
             <button onclick="downloadEncodedFile()">Download Encoded File</button>
@@ -79,7 +81,7 @@
             <h2>Decode File</h2>
             <input type="file" id="encodedFileInput" accept=".txt">
             <textarea id="encodedTextInput" placeholder="Or paste encoded text here"></textarea>
-            <input type="password" id="decryptionKey" placeholder="Enter decryption key">
+            <input type="password" id="decryptionKey" placeholder="Enter decryption key" required>
             <button onclick="decodeFile()">Decode and Download</button>
         </div>
     </div>
@@ -88,6 +90,7 @@
         function encodeFile() {
             const fileInput = document.getElementById('fileInput');
             const customName = document.getElementById('customName').value;
+            const encryptionKey = document.getElementById('encryptionKey').value;
             const encodedDataTextarea = document.getElementById('encodedData');
 
             if (fileInput.files.length === 0) {
@@ -103,12 +106,14 @@
                     const fileContent = event.target.result;
                     const fileInfo = JSON.stringify({
                         name: customName || file.name,
-                        type: 'text/plain', // Always convert to text during encoding
+                        extension: getFileExtension(file.name),
+                        type: file.type,
                         size: file.size,
                         lastModified: file.lastModified,
-                        content: btoa(fileContent)
+                        properties: JSON.stringify(file),
+                        content: encrypt(fileContent, encryptionKey)
                     });
-                    encodedDataTextarea.value = btoa(fileInfo);  // Base64 encode the JSON string
+                    encodedDataTextarea.value = CryptoJS.AES.encrypt(fileInfo, encryptionKey).toString();
                     alert('File encoded successfully.');
                 } catch (error) {
                     alert('Failed to encode the file. Please try again.');
@@ -129,19 +134,27 @@
                 return;
             }
 
-            const decodedData = atob(encodedData);
-            const fileInfo = JSON.parse(decodedData);
-            const blob = new Blob([atob(fileInfo.content)], { type: fileInfo.type });
-            const link = document.createElement('a');
+            const decryptionKey = prompt('Enter decryption key:');
+            if (!decryptionKey) return;
 
-            link.href = URL.createObjectURL(blob);
-            link.download = fileInfo.name;
-            link.click();
+            try {
+                const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
+                const fileInfo = JSON.parse(decryptedData);
+                const blob = new Blob([decrypt(fileInfo.content, decryptionKey)], { type: fileInfo.type });
+                const link = document.createElement('a');
+
+                link.href = URL.createObjectURL(blob);
+                link.download = fileInfo.name;
+                link.click();
+            } catch (error) {
+                alert('Decryption key is incorrect.');
+            }
         }
 
         function decodeFile() {
             const fileInput = document.getElementById('encodedFileInput');
             const encodedTextInput = document.getElementById('encodedTextInput');
+            const decryptionKey = document.getElementById('decryptionKey').value;
             let encodedData = '';
 
             if (fileInput.files.length > 0) {
@@ -150,7 +163,7 @@
 
                 reader.onload = function(event) {
                     encodedData = event.target.result;
-                    decodeAndDownload(encodedData);
+                    decodeAndDownload(encodedData, decryptionKey);
                 };
 
                 reader.onerror = function() {
@@ -160,17 +173,17 @@
                 reader.readAsText(file);
             } else if (encodedTextInput.value.trim() !== '') {
                 encodedData = encodedTextInput.value.trim();
-                decodeAndDownload(encodedData);
+                decodeAndDownload(encodedData, decryptionKey);
             } else {
                 alert('Please upload an encoded file or paste encoded text.');
             }
         }
 
-        function decodeAndDownload(encodedData) {
+        function decodeAndDownload(encodedData, decryptionKey) {
             try {
-                const decodedData = atob(encodedData);
-                const fileInfo = JSON.parse(decodedData);
-                const blob = new Blob([atob(fileInfo.content)], { type: fileInfo.type });
+                const decryptedData = CryptoJS.AES.decrypt(encodedData, decryptionKey).toString(CryptoJS.enc.Utf8);
+                const fileInfo = JSON.parse(decryptedData);
+                const blob = new Blob([decrypt(fileInfo.content, decryptionKey)], { type: fileInfo.type });
                 const link = document.createElement('a');
 
                 link.href = URL.createObjectURL(blob);
@@ -178,8 +191,20 @@
                 link.click();
                 alert('File decoded and downloaded successfully.');
             } catch (error) {
-                alert('Failed to decode the file. Please make sure the encoded data is correct.');
+                alert('Decryption key is incorrect.');
             }
+        }
+
+        function getFileExtension(filename) {
+            return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
+        }
+
+        function encrypt(data, key) {
+            return CryptoJS.AES.encrypt(data, key).toString();
+        }
+
+        function decrypt(data, key) {
+            return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
         }
     </script>
 </body>
