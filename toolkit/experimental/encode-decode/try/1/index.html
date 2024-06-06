@@ -3,17 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Encryption</title>
+    <title>File Encoder/Decoder</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <input type="file" id="fileInput">
-    <input type="text" id="fileNameInput" placeholder="Enter file name">
-    <button onclick="encodeFile()">Encode File</button>
-    <br>
-    <textarea id="encodedText" rows="10" cols="50" readonly></textarea>
-    <br>
-    <button onclick="downloadEncodedFile()">Download Encoded File</button>
-    <script src="script.js"></script>
+    <h1>File Encoder/Decoder</h1>
+
+    <div class="container">
+        <div class="encoder">
+            <h2>Encode File</h2>
+            <input type="file" id="fileInput" accept="*/*">
+            <input type="text" id="customName" placeholder="Enter custom name">
+            <button onclick="encodeFile()">Encode</button>
+            <textarea id="encodedData" readonly></textarea>
+            <button onclick="downloadEncodedFile()">Download Encoded File</button>
+        </div>
+
+        <div class="decoder">
+            <h2>Decode File</h2>
+            <input type="file" id="encodedFileInput" accept=".txt">
+            <textarea id="encodedTextInput" placeholder="Or paste encoded text here"></textarea>
+            <button onclick="decodeFile()">Decode and Download</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
