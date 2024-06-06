@@ -27,7 +27,7 @@ h2 {
     text-align: center;
 }
 
-input[type="file"], input[type="text"], textarea {
+input[type="file"], input[type="text"], input[type="password"], textarea {
     width: 100%;
     margin-bottom: 10px;
     padding: 8px;
