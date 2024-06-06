@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>File Encryption and Decryption</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
 <h1>File Encryption and Decryption</h1>
@@ -11,40 +12,44 @@
 <label for="fileInput">Select a file to upload:</label>
 <input type="file" id="fileInput" accept="*">
 
-<button onclick="encryptFile()">Encrypt File</button>
-<button onclick="decryptFile()">Decrypt File</button>
+<button onclick="encryptAndUpload()">Encrypt and Upload</button>
+<button onclick="downloadAndDecrypt()">Download and Decrypt</button>
 
-<textarea id="output" cols="50" rows="10" readonly></textarea>
+<p id="status"></p>
 
 <script>
-// Caesar cipher encryption function
-function caesarCipherEncrypt(text, shift) {
-    return text.split('').map(char => {
-        if (char.match(/[a-z]/i)) {
-            const code = char.charCodeAt(0);
-            let encryptedChar = String.fromCharCode((code - 65 + shift) % 26 + 65);
-            if (char === char.toLowerCase()) encryptedChar = encryptedChar.toLowerCase();
-            return encryptedChar;
-        }
-        return char;
-    }).join('');
+// AES encryption key (128/192/256 bits)
+const encryptionKey = CryptoJS.enc.Utf8.parse('your_secret_key');
+
+// Function to encrypt file content
+function encryptFileContent(fileContent) {
+    const encrypted = CryptoJS.AES.encrypt(fileContent, encryptionKey, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return encrypted.toString();
 }
 
-// Caesar cipher decryption function
-function caesarCipherDecrypt(text, shift) {
-    return caesarCipherEncrypt(text, (26 - shift) % 26);
+// Function to decrypt file content
+function decryptFileContent(encryptedContent) {
+    const decrypted = CryptoJS.AES.decrypt(encryptedContent, encryptionKey, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
-// Function to handle file encryption
-function encryptFile() {
+// Function to handle file upload and encryption
+function encryptAndUpload() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
             const fileContent = event.target.result;
-            const encryptedContent = caesarCipherEncrypt(fileContent, 3); // You can change the shift value
-            document.getElementById('output').value = encryptedContent;
+            const encryptedContent = encryptFileContent(fileContent);
+            localStorage.setItem('encryptedFile', encryptedContent);
+            document.getElementById('status').innerText = 'File encrypted and uploaded.';
         };
         reader.readAsText(file);
     } else {
@@ -52,20 +57,21 @@ function encryptFile() {
     }
 }
 
-// Function to handle file decryption
-function decryptFile() {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const fileContent = event.target.result;
-            const decryptedContent = caesarCipherDecrypt(fileContent, 3); // You can change the shift value
-            document.getElementById('output').value = decryptedContent;
-        };
-        reader.readAsText(file);
+// Function to handle file download and decryption
+function downloadAndDecrypt() {
+    const encryptedContent = localStorage.getItem('encryptedFile');
+    if (encryptedContent) {
+        const decryptedContent = decryptFileContent(encryptedContent);
+        const blob = new Blob([decryptedContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'decrypted_file.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.getElementById('status').innerText = 'File downloaded and decrypted.';
     } else {
-        alert('Please select a file.');
+        alert('No encrypted file found.');
     }
 }
 </script>
