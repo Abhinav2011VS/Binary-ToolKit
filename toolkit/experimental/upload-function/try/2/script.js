@@ -34,7 +34,7 @@ function convertToOriginal() {
 
     reader.onload = function(event) {
         const binaryData = event.target.result;
-        const blob = new Blob([binaryData], { type: 'application/octet-stream' });
+        const blob = new Blob([binaryData], { type: file.type });
         const url = URL.createObjectURL(blob);
 
         const downloadLink = document.createElement('a');
@@ -47,3 +47,4 @@ function convertToOriginal() {
 
     reader.readAsArrayBuffer(file);
 }
+
