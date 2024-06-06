@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Encryption - Decrypt</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom Encryption - Decrypt</h1>
+    <textarea id="encryptedText" placeholder="Enter encrypted text"></textarea><br>
+    <input type="password" id="encryptionPassword" placeholder="Enter encryption password"><br>
+    <button onclick="decrypt()">Decrypt</button>
+    <h2>Decrypted Text</h2>
+    <textarea id="decryptedText" readonly></textarea>
+
+    <script>
+        function decrypt() {
+            var encryptedText = document.getElementById("encryptedText").value;
+            var encryptionPassword = document.getElementById("encryptionPassword").value;
+
+            // Split encrypted text into parts
+            var parts = encryptedText.split("\n");
+            var base64EncodedText = parts[0];
+            var fileNameBinary = parts[1];
+            var fileExtensionBinary = parts[2];
+            var encryptionPasswordBinary = parts[3];
+
+            // Convert binary back to strings
+            var fileName = binaryToStr(fileNameBinary);
+            var fileExtension = binaryToStr(fileExtensionBinary);
+            var encryptionPassword = binaryToStr(encryptionPasswordBinary);
+
+            // Check encryption password
+            if (encryptionPassword === encryptionPassword) {
+                // Decrypt base64 encoded text
+                var decryptedText = atob(base64EncodedText);
+                document.getElementById("decryptedText").value = decryptedText;
+            } else {
+                alert("Invalid encryption password");
+            }
+        }
+
+        function binaryToStr(binary) {
+            return binary.split(' ').map(function(b) {
+                return String.fromCharCode(parseInt(b, 2));
+            }).join('');
+        }
+    </script>
+</body>
+</html>
