@@ -34,20 +34,16 @@ function convertToOriginal() {
 
     reader.onload = function(event) {
         const binaryData = event.target.result;
-        downloadOriginalFile(binaryData, file.name);
+        const blob = new Blob([binaryData], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = file.name;
+        downloadLink.click();
+        
+        URL.revokeObjectURL(url);
     };
 
     reader.readAsArrayBuffer(file);
-}
-
-function downloadOriginalFile(binaryData, fileName) {
-    const blob = new Blob([binaryData], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-
-    const downloadLink = document.createElement('a');
-    downloadLink.href = url;
-    downloadLink.download = fileName;
-    downloadLink.click();
-    
-    URL.revokeObjectURL(url);
 }
