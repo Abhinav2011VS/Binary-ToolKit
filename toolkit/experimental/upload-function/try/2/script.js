@@ -6,15 +6,15 @@ function convertToBinary() {
     const reader = new FileReader();
 
     reader.onload = function(event) {
-        const binaryString = event.target.result;
-        downloadBinaryFile(binaryString, file.name);
+        const binaryData = event.target.result;
+        downloadBinaryFile(binaryData, file.name);
     };
 
-    reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
 }
 
-function downloadBinaryFile(binaryString, fileName) {
-    const blob = new Blob([binaryString], { type: 'text/plain' });
+function downloadBinaryFile(binaryData, fileName) {
+    const blob = new Blob([binaryData], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
 
     const downloadLink = document.createElement('a');
@@ -33,17 +33,21 @@ function convertToOriginal() {
     const reader = new FileReader();
 
     reader.onload = function(event) {
-        const binaryString = event.target.result;
-        const blob = new Blob([binaryString], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-
-        const downloadLink = document.getElementById('downloadLink');
-        downloadLink.href = url;
-        downloadLink.download = file.name.replace('.bin', '');
-        downloadLink.click();
-        
-        URL.revokeObjectURL(url);
+        const binaryData = event.target.result;
+        downloadOriginalFile(binaryData, file.name);
     };
 
     reader.readAsText(file);
+}
+
+function downloadOriginalFile(binaryData, fileName) {
+    const blob = new Blob([binaryData], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.getElementById('downloadLink');
+    downloadLink.href = url;
+    downloadLink.download = fileName.replace('.bin', '');
+    downloadLink.click();
+    
+    URL.revokeObjectURL(url);
 }
