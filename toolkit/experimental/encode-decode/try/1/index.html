@@ -101,7 +101,7 @@
             reader.onload = function(event) {
                 try {
                     const fileContent = event.target.result;
-                    const fileInfo = JSON.stringify({ 
+                    const fileInfo = JSON.stringify({
                         name: customName || file.name,
                         type: file.type,
                         size: file.size,
@@ -119,11 +119,7 @@
                 alert('Failed to read the file. Please try again.');
             };
 
-            if (file.type.startsWith('text/')) {
-                reader.readAsText(file);
-            } else {
-                reader.readAsBinaryString(file);  // Read binary files as binary string
-            }
+            reader.readAsBinaryString(file);
         }
 
         function downloadEncodedFile() {
@@ -188,3 +184,4 @@
     </script>
 </body>
 </html>
+``
