@@ -3,162 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Encoder/Decoder</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>Custom Encryption - Encrypt</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .encoder, .decoder {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 45%;
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        input[type="file"], input[type="text"], input[type="password"], textarea {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-        }
-
         textarea {
-            height: 100px;
-            resize: none;
-        }
-
-        button {
             width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            height: 200px;
         }
-
-        button:hover {
-            background-color: #0056b3;
+        button {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>File Encoder/Decoder</h1>
+    <h1>Custom Encryption - Encrypt</h1>
+    <textarea id="originalText" placeholder="Enter text to encrypt"></textarea><br>
+    <input type="text" id="fileName" placeholder="Enter file name"><br>
+    <input type="text" id="fileExtension" placeholder="Enter file extension"><br>
+    <input type="password" id="encryptionPassword" placeholder="Enter encryption password"><br>
+    <button onclick="encrypt()">Encrypt</button>
+    <h2>Encrypted Text</h2>
+    <textarea id="encryptedText" readonly></textarea>
 
-    <div class="container">
-        <div class="encoder">
-            <h2>Encode File</h2>
-            <input type="file" id="fileInput" accept="*/*">
-            <input type="text" id="customName" placeholder="Enter custom name">
-            <input type="password" id="encryptionKey" placeholder="Enter encryption key" required>
-            <button onclick="encodeFile()">Encode</button>
-            <textarea id="encodedData" readonly></textarea>
-            <button onclick="downloadEncodedFile()">Download Encoded File</button>
-        </div>
+    <script>
+        function encrypt() {
+            var originalText = document.getElementById("originalText").value;
+            var fileName = document.getElementById("fileName").value;
+            var fileExtension = document.getElementById("fileExtension").value;
+            var encryptionPassword = document.getElementById("encryptionPassword").value;
 
-        <div class="decoder">
-            <h2>Decode File</h2>
-            <input type="file" id="encodedFileInput" accept=".txt">
-            <textarea id="encodedTextInput" placeholder="Or paste encoded text here"></textarea>
-            <input type="password" id="decryptionKey" placeholder="Enter decryption key" required>
-            <button onclick="decodeFile()">Decode and Download</button>
-        </div>
-    </div>
+            // Convert file name, file extension, and encryption password to binary
+            var fileNameBinary = strToBinary(fileName);
+            var fileExtensionBinary = strToBinary(fileExtension);
+            var encryptionPasswordBinary = strToBinary(encryptionPassword);
 
-    <!-- File to Base64 Converter -->
-    <section>
-        <main>
-            <article>
-                <h1>File to Base64</h1>
-                <div class="pageheader">
-                    <a href="#comments">Comments: 58</a>
-                    | <a href="#form-comment-main" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                        <meta itemprop="itemReviewed" content="File to Base64" />
-                        <meta itemprop="ratingCount" content="43" />
-                        Rating: <span itemprop="ratingValue">4.6</span>/<span itemprop="bestRating">5</span>
-                    </a>
-                </div>
-                <p>Encode file to Base64 online and embed it into any text document such as HTML, JSON, or XML. The fact is that if you do not convert binary to Base64, you won’t be able to insert such data into text files, because binary characters will corrupt text data. It is important to remember that the size of Base64 encoded files increases by 33%. Please note that the file to Base64 encoder accepts any file types with a size of up to 50 MB. If you are looking for the reverse process, check <a href="/converter/decode/file">Base64 to File</a>.</p>
-                <form action="/toolkit/experimental/encode-decode/try/2/" name="base64-converter-encode-file" id="form-base64-converter-encode-file" method="post" class="form-base64" enctype="multipart/form-data">
-                    <div>
-                        <input type="hidden" value="base64-converter-encode-file" name="form_is_submited"><input type="hidden" value="/toolkit/experimental/encode-decode/try/2/" name="form_action_url">
-                        <fieldset id="form-base64-converter-encode-file-fieldset-image">
-                            <label><h5>Local File<b>*</b></h5><input type="file" value="" name="file" id="form-base64-converter-encode-file-file"><span>Choose a file or drag and drop it here</span></label>
-                        </fieldset>
-                        <fieldset id="form-base64-converter-encode-file-fieldset-format">
-    <label><h5>Output Format</h5>
-        <select value="" name="format" id="form-base64-converter-encode-file-format">
-            <option value="txt">Plain text -- just the Base64 value</option>
-            <option value="uri">Data URI -- data:content/type;base64</option>
-            <option value="html_hyperlink">HTML Hyperlink -- &lt;a&gt;&lt;/a&gt;</option>
-            <option value="json">JSON -- {file:{mime,data}}</option>
-            <option value="xml">XML -- &lt;file&gt;&lt;/file&gt;</option>
-        </select>
-    </label>
-</fieldset>
-<button value="1" name="encode" id="form-base64-converter-encode-file-encode">Encode file to Base64</button>
-<fieldset id="form-base64-converter-encode-file-fieldset-base64">
-    <label><h5>Base64</h5><textarea readonly name="base64" id="form-base64-converter-encode-file-base64"></textarea><span>The result of Base64 encoding will appear here</span></label>
-</fieldset>
-</div>
-</article>
+            // Combine all data into custom format
+            var encryptedText = btoa(originalText) + "\n" +
+                                fileNameBinary + "\n" +
+                                fileExtensionBinary + "\n" +
+                                encryptionPasswordBinary;
 
-<script class="embedjs">
-    (function (body) {
-        if (body.clientWidth >= 1100) {
-            var header = body.querySelector('header'),
-            nav = header.querySelector('nav>ul'),
-            width = (header.scrollWidth - 20) - header.querySelector('div:first-child').scrollWidth;
-
-            if (nav.scrollWidth >= width) {
-                var home = nav.firstElementChild,
-                ul = home.querySelector('ul'),
-                items = header.querySelectorAll('nav>ul>li'),
-                len = items.length;
-
-                if (!ul) {
-                    home.innerHTML = '<b>' + home.innerHTML + '</b>';
-                    ul = document.createElement('ul');
-                    home.appendChild(ul);
-                }
-
-                do {
-                    ul.appendChild(items[len - 1]);
-                } while (nav.scrollWidth >= width && --len > 0);
-            }
+            document.getElementById("encryptedText").value = encryptedText;
         }
-    })(document.body);
-</script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script src='//static.base64.guru/js/comments.min.js?1.0.50' async></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134607367-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-134607367-1');
-</script>
+        function strToBinary(str) {
+            return str.split('').map(function(char) {
+                return char.charCodeAt(0).toString(2);
+            }).join(' ');
+        }
+    </script>
 </body>
 </html>
