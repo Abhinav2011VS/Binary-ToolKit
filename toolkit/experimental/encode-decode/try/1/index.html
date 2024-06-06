@@ -4,8 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Encoder/Decoder</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .encoder, .decoder {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input[type="file"], input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>File Encoder/Decoder</h1>
@@ -15,7 +70,6 @@
             <h2>Encode File</h2>
             <input type="file" id="fileInput" accept="*/*">
             <input type="text" id="customName" placeholder="Enter custom name">
-            <input type="password" id="encryptionKey" placeholder="Enter encryption key">
             <button onclick="encodeFile()">Encode</button>
             <textarea id="encodedData" readonly></textarea>
             <button onclick="downloadEncodedFile()">Download Encoded File</button>
@@ -25,11 +79,110 @@
             <h2>Decode File</h2>
             <input type="file" id="encodedFileInput" accept=".txt">
             <textarea id="encodedTextInput" placeholder="Or paste encoded text here"></textarea>
-            <input type="password" id="decryptionKey" placeholder="Enter decryption key">
             <button onclick="decodeFile()">Decode and Download</button>
         </div>
     </div>
 
-    <script src="scripts.js"></script>
+    <script>
+        function encodeFile() {
+            const fileInput = document.getElementById('fileInput');
+            const customName = document.getElementById('customName').value;
+            const encodedDataTextarea = document.getElementById('encodedData');
+
+            if (fileInput.files.length === 0) {
+                alert('Please select a file to encode.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                try {
+                    const fileContent = event.target.result;
+                    const encodedContent = btoa(fileContent);  // Base64 encode the file content
+                    const fileInfo = JSON.stringify({ 
+                        name: customName || file.name,
+                        type: file.type,
+                        content: encodedContent
+                    });
+                    encodedDataTextarea.value = btoa(fileInfo);  // Base64 encode the JSON string
+                    alert('File encoded successfully.');
+                } catch (error) {
+                    alert('Failed to encode the file. Please try again.');
+                }
+            };
+
+            reader.onerror = function() {
+                alert('Failed to read the file. Please try again.');
+            };
+
+            if (file.type.startsWith('text/')) {
+                reader.readAsText(file);
+            } else {
+                reader.readAsBinaryString(file);  // Read binary files as binary string
+            }
+        }
+
+        function downloadEncodedFile() {
+            const encodedData = document.getElementById('encodedData').value;
+            if (!encodedData) {
+                alert('No encoded data to download.');
+                return;
+            }
+
+            const customName = document.getElementById('customName').value || 'encoded_file';
+            const blob = new Blob([encodedData], { type: 'text/plain' });
+            const link = document.createElement('a');
+
+            link.href = URL.createObjectURL(blob);
+            link.download = `${customName}.txt`;
+            link.click();
+        }
+
+        function decodeFile() {
+            const fileInput = document.getElementById('encodedFileInput');
+            const encodedTextInput = document.getElementById('encodedTextInput');
+            let encodedData = '';
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    encodedData = event.target.result;
+                    decodeAndDownload(encodedData);
+                };
+
+                reader.onerror = function() {
+                    alert('Failed to read the encoded file. Please try again.');
+                };
+
+                reader.readAsText(file);
+            } else if (encodedTextInput.value.trim() !== '') {
+                encodedData = encodedTextInput.value.trim();
+                decodeAndDownload(encodedData);
+            } else {
+                alert('Please upload an encoded file or paste encoded text.');
+            }
+        }
+
+        function decodeAndDownload(encodedData) {
+            try {
+                const decryptedData = atob(encodedData);  // Base64 decode the data
+                const fileInfo = JSON.parse(decryptedData);
+                const fileContent = atob(fileInfo.content);
+                const blob = new Blob([fileContent], { type: fileInfo.type });
+                const link = document.createElement('a');
+
+                link.href = URL.createObjectURL(blob);
+                link.download = fileInfo.name;
+                link.click();
+                alert('File decoded and downloaded successfully.');
+            } catch (error) {
+                alert('Failed to decode the file. Please make sure the encoded data is correct.');
+            }
+        }
+    </script>
 </body>
 </html>
