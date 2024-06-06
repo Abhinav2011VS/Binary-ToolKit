@@ -29,7 +29,11 @@ function encodeFile() {
         encodedDataTextarea.value = encryptedData;  // Display the encrypted data
     };
 
-    reader.readAsBinaryString(file);
+    if (file.type.startsWith('text/')) {
+        reader.readAsText(file);
+    } else {
+        reader.readAsBinaryString(file);
+    }
 }
 
 function downloadEncodedFile() {
