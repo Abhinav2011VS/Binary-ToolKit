@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>High-Tech File Encryptor & Decryptor</title>
+<title>High-Tech File Encryptor/Decryptor</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -53,17 +53,17 @@
 </head>
 <body>
 <div class="container">
-    <h1>High-Tech File Encryptor & Decryptor</h1>
+    <h1>High-Tech File Encryptor/Decryptor</h1>
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="fileInput" required>
+        <input type="file" id="fileInput" accept=".txt" required>
         <label for="fileInput">Choose a file to encrypt</label>
         <input type="submit" value="Encrypt">
     </form>
     <div id="downloadLink" style="display: none;">
-        <a id="convertedFileLink" download>Download Encrypted File</a>
+        <a id="encryptedFileLink" download>Download Encrypted File</a>
     </div>
     <form id="decryptForm" style="display: none;">
-        <input type="file" id="encryptedFileInput" required>
+        <input type="file" id="encryptedFileInput" accept=".txt" required>
         <label for="encryptedFileInput">Choose the encrypted file to decrypt</label>
         <input type="submit" value="Decrypt">
     </form>
@@ -71,15 +71,32 @@
         <a id="originalFileDownloadLink" download>Download Decrypted File</a>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 <script>
     function encryptFile(file) {
-        // Simple encryption algorithm (reverses the content)
-        return file.split("").reverse().join("");
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var wordArray = CryptoJS.lib.WordArray.create(event.target.result);
+            var encrypted = CryptoJS.AES.encrypt(wordArray, "secret passphrase").toString();
+            var encryptedBlob = new Blob([encrypted], { type: "text/plain" });
+            var downloadLink = document.getElementById("encryptedFileLink");
+            downloadLink.href = URL.createObjectURL(encryptedBlob);
+            downloadLink.style.display = "block";
+            document.getElementById("decryptForm").style.display = "block";
+        };
+        reader.readAsArrayBuffer(file);
     }
 
     function decryptFile(encryptedFile) {
-        // Simple decryption algorithm (reverses the content)
-        return encryptedFile.split("").reverse().join("");
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var decrypted = CryptoJS.AES.decrypt(event.target.result, "secret passphrase");
+            var decryptedBlob = new Blob([decrypted.toString(CryptoJS.enc.Utf8)], { type: "application/octet-stream" });
+            var downloadLink = document.getElementById("originalFileDownloadLink");
+            downloadLink.href = URL.createObjectURL(decryptedBlob);
+            downloadLink.style.display = "block";
+        };
+        reader.readAsText(encryptedFile);
     }
 
     document.getElementById("uploadForm").addEventListener("submit", function(event) {
@@ -87,18 +104,7 @@
         var fileInput = document.getElementById("fileInput");
         if (fileInput.files.length > 0) {
             var file = fileInput.files[0];
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var originalContent = event.target.result;
-                var encryptedContent = encryptFile(originalContent);
-                var encryptedFile = new Blob([encryptedContent], { type: "text/plain" });
-                var downloadLink = document.getElementById("convertedFileLink");
-                downloadLink.href = URL.createObjectURL(encryptedFile);
-                downloadLink.download = file.name + ".txt"; // Download as a text file
-                downloadLink.style.display = "block";
-                document.getElementById("decryptForm").style.display = "block";
-            };
-            reader.readAsText(file);
+            encryptFile(file);
         }
     });
 
@@ -107,17 +113,7 @@
         var encryptedFileInput = document.getElementById("encryptedFileInput");
         if (encryptedFileInput.files.length > 0) {
             var encryptedFile = encryptedFileInput.files[0];
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var encryptedContent = event.target.result;
-                var originalContent = decryptFile(encryptedContent);
-                var originalFile = new Blob([originalContent], { type: "text/plain" });
-                var downloadLink = document.getElementById("originalFileDownloadLink");
-                downloadLink.href = URL.createObjectURL(originalFile);
-                downloadLink.download = "decrypted_" + encryptedFile.name.replace(".txt", ""); // Maintain original file format
-                downloadLink.style.display = "block";
-            };
-            reader.readAsText(encryptedFile);
+            decryptFile(encryptedFile);
         }
     });
 </script>
