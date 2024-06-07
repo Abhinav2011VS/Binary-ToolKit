@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>High-Tech File Encryptor/Decryptor</title>
+<title>Super Secure File Encrypter/Decrypter</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -12,12 +12,18 @@
         background-color: #f2f2f2;
     }
     .container {
+        display: flex;
+        justify-content: space-between;
         max-width: 800px;
         margin: 50px auto;
         padding: 20px;
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .section {
+        flex: 1;
+        padding: 20px;
     }
     h1 {
         text-align: center;
@@ -28,15 +34,12 @@
     input[type="file"] {
         display: none;
     }
-    label {
-        display: block;
-        width: 200px;
-        margin: 20px auto;
+    textarea {
+        width: 100%;
+        height: 200px;
+        margin-top: 10px;
         padding: 10px;
-        background-color: #3498db;
-        color: #fff;
-        cursor: pointer;
-        border-radius: 5px;
+        resize: none;
     }
     input[type="submit"] {
         display: block;
@@ -53,28 +56,20 @@
 </head>
 <body>
 <div class="container">
-    <h1>High-Tech File Encryptor/Decryptor</h1>
-    <div id="encryptionSection">
-        <h2>Encryption</h2>
+    <div class="section">
+        <h1>Encrypter</h1>
         <form id="encryptForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" accept=".txt" required>
+            <input type="file" id="fileInput" accept="*" required>
             <label for="fileInput">Choose a file to encrypt</label>
             <input type="submit" value="Encrypt">
         </form>
-        <div id="downloadLink" style="display: none;">
-            <a id="encryptedFileLink" download>Download Encrypted File</a>
-        </div>
     </div>
-    <div id="decryptionSection" style="display: none;">
-        <h2>Decryption</h2>
-        <form id="decryptForm" enctype="multipart/form-data">
-            <input type="file" id="encryptedFileInput" accept=".txt" required>
-            <label for="encryptedFileInput">Choose the encrypted file to decrypt</label>
+    <div class="section">
+        <h1>Decrypter</h1>
+        <form id="decryptForm">
+            <textarea id="encryptedCode" placeholder="Paste the encrypted code here"></textarea>
             <input type="submit" value="Decrypt">
         </form>
-        <div id="originalFileLink" style="display: none;">
-            <a id="originalFileDownloadLink" download>Download Decrypted File</a>
-        </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
@@ -83,27 +78,23 @@
         var reader = new FileReader();
         reader.onload = function(event) {
             var wordArray = CryptoJS.lib.WordArray.create(event.target.result);
-            var encrypted = CryptoJS.AES.encrypt(wordArray, "secret passphrase").toString();
-            var encryptedBlob = new Blob([encrypted], { type: "text/plain" });
-            var downloadLink = document.getElementById("encryptedFileLink");
+            var encrypted = CryptoJS.AES.encrypt(wordArray, "supersecretkey").toString();
+            var encryptedCode = encodeURIComponent(encrypted);
+            var encryptedBlob = new Blob([encryptedCode], { type: "text/plain" });
+            var downloadLink = document.createElement("a");
             downloadLink.href = URL.createObjectURL(encryptedBlob);
-            downloadLink.style.display = "block";
-            document.getElementById("encryptionSection").style.display = "none";
-            document.getElementById("decryptionSection").style.display = "block";
+            downloadLink.download = "encrypted_code.txt";
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         };
         reader.readAsArrayBuffer(file);
     }
 
-    function decryptFile(encryptedFile) {
-        var reader = new FileReader();
-        reader.onload = function(event) {
-            var decrypted = CryptoJS.AES.decrypt(event.target.result, "secret passphrase");
-            var decryptedBlob = new Blob([decrypted.toString(CryptoJS.enc.Utf8)], { type: "application/octet-stream" });
-            var downloadLink = document.getElementById("originalFileDownloadLink");
-            downloadLink.href = URL.createObjectURL(decryptedBlob);
-            downloadLink.style.display = "block";
-        };
-        reader.readAsText(encryptedFile);
+    function decryptCode(code) {
+        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(code), "supersecretkey");
+        return decrypted.toString(CryptoJS.enc.Utf8);
     }
 
     document.getElementById("encryptForm").addEventListener("submit", function(event) {
@@ -117,12 +108,11 @@
 
     document.getElementById("decryptForm").addEventListener("submit", function(event) {
         event.preventDefault();
-        var encryptedFileInput = document.getElementById("encryptedFileInput");
-        if (encryptedFileInput.files.length > 0) {
-            var encryptedFile = encryptedFileInput.files[0];
-            decryptFile(encryptedFile);
-        }
+        var encryptedCode = document.getElementById("encryptedCode").value;
+        var decryptedText = decryptCode(encryptedCode);
+        alert("Decrypted text:\n\n" + decryptedText);
     });
 </script>
 </body>
 </html>
+
