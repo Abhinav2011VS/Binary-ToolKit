@@ -54,21 +54,27 @@
 <body>
 <div class="container">
     <h1>High-Tech File Encryptor/Decryptor</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="fileInput" accept=".txt" required>
-        <label for="fileInput">Choose a file to encrypt</label>
-        <input type="submit" value="Encrypt">
-    </form>
-    <div id="downloadLink" style="display: none;">
-        <a id="encryptedFileLink" download>Download Encrypted File</a>
+    <div id="encryptionSection">
+        <h2>Encryption</h2>
+        <form id="encryptForm" enctype="multipart/form-data">
+            <input type="file" id="fileInput" accept=".txt" required>
+            <label for="fileInput">Choose a file to encrypt</label>
+            <input type="submit" value="Encrypt">
+        </form>
+        <div id="downloadLink" style="display: none;">
+            <a id="encryptedFileLink" download>Download Encrypted File</a>
+        </div>
     </div>
-    <form id="decryptForm" style="display: none;">
-        <input type="file" id="encryptedFileInput" accept=".txt" required>
-        <label for="encryptedFileInput">Choose the encrypted file to decrypt</label>
-        <input type="submit" value="Decrypt">
-    </form>
-    <div id="originalFileLink" style="display: none;">
-        <a id="originalFileDownloadLink" download>Download Decrypted File</a>
+    <div id="decryptionSection" style="display: none;">
+        <h2>Decryption</h2>
+        <form id="decryptForm" enctype="multipart/form-data">
+            <input type="file" id="encryptedFileInput" accept=".txt" required>
+            <label for="encryptedFileInput">Choose the encrypted file to decrypt</label>
+            <input type="submit" value="Decrypt">
+        </form>
+        <div id="originalFileLink" style="display: none;">
+            <a id="originalFileDownloadLink" download>Download Decrypted File</a>
+        </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
@@ -82,7 +88,8 @@
             var downloadLink = document.getElementById("encryptedFileLink");
             downloadLink.href = URL.createObjectURL(encryptedBlob);
             downloadLink.style.display = "block";
-            document.getElementById("decryptForm").style.display = "block";
+            document.getElementById("encryptionSection").style.display = "none";
+            document.getElementById("decryptionSection").style.display = "block";
         };
         reader.readAsArrayBuffer(file);
     }
@@ -99,7 +106,7 @@
         reader.readAsText(encryptedFile);
     }
 
-    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+    document.getElementById("encryptForm").addEventListener("submit", function(event) {
         event.preventDefault();
         var fileInput = document.getElementById("fileInput");
         if (fileInput.files.length > 0) {
