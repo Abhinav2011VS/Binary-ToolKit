@@ -1,79 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Reader and Writer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        textarea {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High-Tech File Encryptor & Decryptor</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+    }
+    form {
+        text-align: center;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    label {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #3498db;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    input[type="submit"] {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #2ecc71;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Text Reader and Writer</h1>
-        <h2>Write Text to .txt file</h2>
-        <textarea id="writeTextarea"></textarea>
-        <br>
-        <button class="button" onclick="writeText()">Download as Text File</button>
-        <h2>Read Text from .txt file</h2>
-        <input type="file" id="fileInput" accept=".txt">
-        <br>
-        <textarea id="readTextarea" readonly></textarea>
+<div class="container">
+    <h1>High-Tech File Encryptor & Decryptor</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" required>
+        <label for="fileInput">Choose a file to encrypt</label>
+        <input type="submit" value="Encrypt">
+    </form>
+    <div id="downloadLink" style="display: none;">
+        <a id="convertedFileLink" download>Download Encrypted File</a>
     </div>
+    <form id="decryptForm" style="display: none;">
+        <input type="file" id="encryptedFileInput" required>
+        <label for="encryptedFileInput">Choose the encrypted file to decrypt</label>
+        <input type="submit" value="Decrypt">
+    </form>
+    <div id="originalFileLink" style="display: none;">
+        <a id="originalFileDownloadLink" download>Download Decrypted File</a>
+    </div>
+</div>
+<script>
+    function encryptFile(file) {
+        // Simple encryption algorithm (reverses the content)
+        return file.split("").reverse().join("");
+    }
 
-    <script>
-        function writeText() {
-            // Get the text from the writeTextarea
-            let text = document.getElementById('writeTextarea').value;
+    function decryptFile(encryptedFile) {
+        // Simple decryption algorithm (reverses the content)
+        return encryptedFile.split("").reverse().join("");
+    }
 
-            // Create a Blob object with the text content
-            let blob = new Blob([text], { type: 'text/plain' });
-
-            // Create a temporary anchor element
-            let anchor = document.createElement('a');
-            anchor.href = window.URL.createObjectURL(blob);
-            anchor.download = 'output.txt';
-
-            // Simulate a click on the anchor element
-            anchor.click();
-        }
-
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-            let file = event.target.files[0];
-            let reader = new FileReader();
-
+    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var fileInput = document.getElementById("fileInput");
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var reader = new FileReader();
             reader.onload = function(event) {
-                // Display the contents of the file in the readTextarea
-                document.getElementById('readTextarea').value = event.target.result;
+                var originalContent = event.target.result;
+                var encryptedContent = encryptFile(originalContent);
+                var encryptedFile = new Blob([encryptedContent], { type: "text/plain" });
+                var downloadLink = document.getElementById("convertedFileLink");
+                downloadLink.href = URL.createObjectURL(encryptedFile);
+                downloadLink.download = file.name + ".txt"; // Download as a text file
+                downloadLink.style.display = "block";
+                document.getElementById("decryptForm").style.display = "block";
             };
-
-            // Read the file as text
             reader.readAsText(file);
-        });
-    </script>
+        }
+    });
+
+    document.getElementById("decryptForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var encryptedFileInput = document.getElementById("encryptedFileInput");
+        if (encryptedFileInput.files.length > 0) {
+            var encryptedFile = encryptedFileInput.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var encryptedContent = event.target.result;
+                var originalContent = decryptFile(encryptedContent);
+                var originalFile = new Blob([originalContent], { type: "text/plain" });
+                var downloadLink = document.getElementById("originalFileDownloadLink");
+                downloadLink.href = URL.createObjectURL(originalFile);
+                downloadLink.download = "decrypted_" + encryptedFile.name.replace(".txt", ""); // Maintain original file format
+                downloadLink.style.display = "block";
+            };
+            reader.readAsText(encryptedFile);
+        }
+    });
+</script>
 </body>
 </html>
