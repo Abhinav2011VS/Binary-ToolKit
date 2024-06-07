@@ -69,25 +69,44 @@
         <input type="submit" value="Decrypt">
     </form>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0-beta.1/jsencrypt.min.js"></script>
 <script>
+    // Generate RSA key pair
+    var crypt = new JSEncrypt({ default_key_size: 2048 });
+    crypt.getKey(function() {
+        var publicKey = crypt.getPublicKey();
+        localStorage.setItem("publicKey", publicKey);
+    });
+
     function encryptFile(file) {
         var reader = new FileReader();
         reader.onload = function(event) {
-            var encrypted = CryptoJS.AES.encrypt(event.target.result, "secret passphrase").toString();
+            var fileData = event.target.result;
+            var publicKey = localStorage.getItem("publicKey");
+
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            var encrypted = encrypt.encrypt(fileData);
+            
             var downloadLink = document.getElementById("encryptedFileLink");
             downloadLink.href = "data:text/plain;charset=utf-8," + encodeURIComponent(encrypted);
             downloadLink.style.display = "block";
         };
-        reader.readAsDataURL(file);
+        reader.readAsText(file);
     }
 
     function decryptFile(encryptedFile) {
         var reader = new FileReader();
         reader.onload = function(event) {
             var encryptedText = event.target.result;
-            var decrypted = CryptoJS.AES.decrypt(encryptedText, "secret passphrase");
-            var decryptedFile = new Blob([decrypted.toString(CryptoJS.enc.Utf8)], { type: encryptedFile.type });
+
+            var privateKey = localStorage.getItem("privateKey");
+
+            var decrypt = new JSEncrypt();
+            decrypt.setPrivateKey(privateKey);
+            var decrypted = decrypt.decrypt(encryptedText);
+            
+            var decryptedFile = new Blob([decrypted], { type: encryptedFile.type });
             var downloadLink = document.createElement("a");
             downloadLink.href = URL.createObjectURL(decryptedFile);
             downloadLink.download = "decrypted_" + encryptedFile.name;
