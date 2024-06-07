@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Reader and Writer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text Reader and Writer</h1>
+        <h2>Write Text to .txt file</h2>
+        <textarea id="writeTextarea"></textarea>
+        <br>
+        <button class="button" onclick="writeText()">Download as Text File</button>
+        <h2>Read Text from .txt file</h2>
+        <input type="file" id="fileInput" accept=".txt">
+        <br>
+        <textarea id="readTextarea" readonly></textarea>
+    </div>
+
+    <script>
+        function writeText() {
+            // Get the text from the writeTextarea
+            let text = document.getElementById('writeTextarea').value;
+
+            // Create a Blob object with the text content
+            let blob = new Blob([text], { type: 'text/plain' });
+
+            // Create a temporary anchor element
+            let anchor = document.createElement('a');
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.download = 'output.txt';
+
+            // Simulate a click on the anchor element
+            anchor.click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function(event) {
+                // Display the contents of the file in the readTextarea
+                document.getElementById('readTextarea').value = event.target.result;
+            };
+
+            // Read the file as text
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
