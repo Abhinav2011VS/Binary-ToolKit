@@ -74,14 +74,12 @@
     function encryptFile(file) {
         var reader = new FileReader();
         reader.onload = function(event) {
-            var wordArray = CryptoJS.lib.WordArray.create(event.target.result);
-            var encrypted = CryptoJS.AES.encrypt(wordArray, "secret passphrase").toString();
-            var encryptedBlob = new Blob([encrypted], { type: "text/plain" });
+            var encrypted = CryptoJS.AES.encrypt(event.target.result, "secret passphrase").toString();
             var downloadLink = document.getElementById("encryptedFileLink");
-            downloadLink.href = URL.createObjectURL(encryptedBlob);
+            downloadLink.href = "data:text/plain;charset=utf-8," + encodeURIComponent(encrypted);
             downloadLink.style.display = "block";
         };
-        reader.readAsArrayBuffer(file);
+        reader.readAsDataURL(file);
     }
 
     function decryptFile(encryptedFile) {
@@ -89,7 +87,7 @@
         reader.onload = function(event) {
             var encryptedText = event.target.result;
             var decrypted = CryptoJS.AES.decrypt(encryptedText, "secret passphrase");
-            var decryptedFile = new Blob([decrypted], { type: encryptedFile.type });
+            var decryptedFile = new Blob([decrypted.toString(CryptoJS.enc.Utf8)], { type: encryptedFile.type });
             var downloadLink = document.createElement("a");
             downloadLink.href = URL.createObjectURL(decryptedFile);
             downloadLink.download = "decrypted_" + encryptedFile.name;
