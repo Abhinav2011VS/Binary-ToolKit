@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Binary Toolkit - 100 Characters Length</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>50 Character Input</h1>
+        <label for="input">Input:</label>
+        <textarea id="input" placeholder="Enter text or binary" maxlength="50"></textarea>
+        <span id="charCount">0/100</span>
+        <br>
+        <label for="charSet">Character Set:</label>
+        <select id="charSet">
+            <option value="ascii">ASCII</option>
+            <option value="unicode">Unicode</option>
+        </select>
+        <br>
+        <label for="binaryOption">Binary Representation:</label>
+        <select id="binaryOption">
+            <option value="standard">Standard (Recommended)</option>
+            <option value="leadingZeros">Leading Zeros</option>
+            <option value="asciiCodes">ASCII Codes</option>
+            <option value="unicodeCodes">Unicode Codes</option>
+        </select>
+        <br>
+        <button onclick="convertToBinary()">To Binary</button>
+        <button onclick="convertFromBinary()">From Binary</button>
+        <button onclick="clearFields()">Clear</button>
+        <button onclick="copyOutput()">Copy Output</button>
+        <br>
+        <label for="output">Output:</label>
+        <textarea id="output" readonly></textarea>
+        <br>
+        <button onclick="downloadSource()">Download Source Code</button>
+        <button onclick="downloadBinary()">Download Binary Code</button>
+        <button onclick="goToHomePage()">Home</button>
+        <button onclick="goToLengthsPage()">Get More Length</button>
+        <label for="made-by">Made by Abhinav VS</label>
+    </div>
+    <script src="/script.js"></script>
+    <script src="amount.js"></script>
+</body>
+</html>
